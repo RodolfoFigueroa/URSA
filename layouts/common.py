@@ -73,6 +73,7 @@ def generate_drive_text(how, where):
         ]
     )
 
+
 def generate_drive_text_translation(how, where):
     return html.Div(
         [
@@ -84,9 +85,7 @@ def generate_drive_text_translation(how, where):
                 class_name="supp-info",
             ),
             dbc.Card(
-                dbc.CardBody(
-                    [html.H5(id="generate-drive-text3"), html.P(id="WHERE")]
-                ),
+                dbc.CardBody([html.H5(id="generate-drive-text3"), html.P(id="WHERE")]),
                 class_name="supp-info",
             ),
             dbc.Card(
@@ -99,49 +98,69 @@ def generate_drive_text_translation(how, where):
                                 html.Li(
                                     [
                                         html.B("UNSUBMITTED"),
-                                        html.Span(" - Pendiente en el cliente.", id="generate-drive-text6"),
+                                        html.Span(
+                                            " - Pendiente en el cliente.",
+                                            id="generate-drive-text6",
+                                        ),
                                     ]
                                 ),
                                 html.Li(
                                     [
                                         html.B("READY"),
-                                        html.Span(" - En cola en el servidor.", id="generate-drive-text7"),
+                                        html.Span(
+                                            " - En cola en el servidor.",
+                                            id="generate-drive-text7",
+                                        ),
                                     ]
                                 ),
                                 html.Li(
                                     [
                                         html.B("RUNNING"),
-                                        html.Span(" - En ejecución.", id="generate-drive-text8"),
+                                        html.Span(
+                                            " - En ejecución.",
+                                            id="generate-drive-text8",
+                                        ),
                                     ]
                                 ),
                                 html.Li(
                                     [
                                         html.B("COMPLETED"),
-                                        html.Span(" - Completada exitosamente.", id="generate-drive-text9"),
+                                        html.Span(
+                                            " - Completada exitosamente.",
+                                            id="generate-drive-text9",
+                                        ),
                                     ]
                                 ),
                                 html.Li(
                                     [
                                         html.B("FAILED"),
-                                        html.Span(" - No completada debido a un error.", id="generate-drive-text10"),
+                                        html.Span(
+                                            " - No completada debido a un error.",
+                                            id="generate-drive-text10",
+                                        ),
                                     ]
                                 ),
                                 html.Li(
                                     [
                                         html.B("CANCEL_REQUESTED"),
-                                        html.Span(" - En ejecución pero se ha solicitado su cancelación.", id="generate-drive-text11"),
+                                        html.Span(
+                                            " - En ejecución pero se ha solicitado su cancelación.",
+                                            id="generate-drive-text11",
+                                        ),
                                     ]
                                 ),
                                 html.Li(
                                     [
                                         html.B("CANCELED"),
-                                        html.Span(" - Cancelada.", id="generate-drive-text12"),
+                                        html.Span(
+                                            " - Cancelada.", id="generate-drive-text12"
+                                        ),
                                     ]
                                 ),
                             ]
-                        ),  
+                        ),
                     ]
-                ), 
+                ),
                 class_name="supp-info",
             ),
             dbc.Card(
@@ -156,14 +175,18 @@ def generate_drive_text_translation(how, where):
         ]
     )
 
+
 def generate_drive_text_translation_land(how, where):
     return html.Div(
         [
             dbc.Card(
-                dbc.CardBody(html.H4(id="generate-drive-text1-land")), class_name="main-info"
+                dbc.CardBody(html.H4(id="generate-drive-text1-land")),
+                class_name="main-info",
             ),
             dbc.Card(
-                dbc.CardBody([html.H5(id="generate-drive-text2-land"), html.P(id="HOW-land")]),
+                dbc.CardBody(
+                    [html.H5(id="generate-drive-text2-land"), html.P(id="HOW-land")]
+                ),
                 class_name="supp-info",
             ),
             dbc.Card(
@@ -182,49 +205,70 @@ def generate_drive_text_translation_land(how, where):
                                 html.Li(
                                     [
                                         html.B("UNSUBMITTED"),
-                                        html.Span(" - Pendiente en el cliente.", id="generate-drive-text6-land"),
+                                        html.Span(
+                                            " - Pendiente en el cliente.",
+                                            id="generate-drive-text6-land",
+                                        ),
                                     ]
                                 ),
                                 html.Li(
                                     [
                                         html.B("READY"),
-                                        html.Span(" - En cola en el servidor.", id="generate-drive-text7-land"),
+                                        html.Span(
+                                            " - En cola en el servidor.",
+                                            id="generate-drive-text7-land",
+                                        ),
                                     ]
                                 ),
                                 html.Li(
                                     [
                                         html.B("RUNNING"),
-                                        html.Span(" - En ejecución.", id="generate-drive-text8-land"),
+                                        html.Span(
+                                            " - En ejecución.",
+                                            id="generate-drive-text8-land",
+                                        ),
                                     ]
                                 ),
                                 html.Li(
                                     [
                                         html.B("COMPLETED"),
-                                        html.Span(" - Completada exitosamente.", id="generate-drive-text9-land"),
+                                        html.Span(
+                                            " - Completada exitosamente.",
+                                            id="generate-drive-text9-land",
+                                        ),
                                     ]
                                 ),
                                 html.Li(
                                     [
                                         html.B("FAILED"),
-                                        html.Span(" - No completada debido a un error.", id="generate-drive-text10-land"),
+                                        html.Span(
+                                            " - No completada debido a un error.",
+                                            id="generate-drive-text10-land",
+                                        ),
                                     ]
                                 ),
                                 html.Li(
                                     [
                                         html.B("CANCEL_REQUESTED"),
-                                        html.Span(" - En ejecución pero se ha solicitado su cancelación.", id="generate-drive-text11-land"),
+                                        html.Span(
+                                            " - En ejecución pero se ha solicitado su cancelación.",
+                                            id="generate-drive-text11-land",
+                                        ),
                                     ]
                                 ),
                                 html.Li(
                                     [
                                         html.B("CANCELED"),
-                                        html.Span(" - Cancelada.", id="generate-drive-text12-land"),
+                                        html.Span(
+                                            " - Cancelada.",
+                                            id="generate-drive-text12-land",
+                                        ),
                                     ]
                                 ),
                             ]
-                        ),  
+                        ),
                     ]
-                ), 
+                ),
                 class_name="supp-info",
             ),
             dbc.Card(

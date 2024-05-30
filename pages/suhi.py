@@ -11,7 +11,10 @@ import ursa.utils.geometry as ug
 import ursa.utils.raster as ru
 import ursa.world_cover as wc
 
-from components.text import figureWithDescription_translation, figureWithDescription_translation2
+from components.text import (
+    figureWithDescription_translation,
+    figureWithDescription_translation2,
+)
 from components.page import new_page_layout
 from dash import html, dcc, callback, Input, Output, State
 from datetime import datetime, timezone
@@ -22,11 +25,15 @@ from shapely.geometry import shape
 import json
 
 # Traducciones
-with open('./data/translations/suhi/translations_suhi.json', 'r', encoding='utf-8') as file:
+with open(
+    "./data/translations/suhi/translations_suhi.json", "r", encoding="utf-8"
+) as file:
     translations = json.load(file)
-    
+
 # Traducciones
-with open('./data/translations/suhi/tab_translations_suhi.json', 'r', encoding='utf-8') as file:
+with open(
+    "./data/translations/suhi/tab_translations_suhi.json", "r", encoding="utf-8"
+) as file:
     tab_translations = json.load(file)
 
 start_time_suhi = None
@@ -47,8 +54,10 @@ WELCOME_CONTENT = [
             html.Span(id="WELCOME_CONTENT_PART1"),
             html.Strong(id="WELCOME_CONTENT_PART2"),
             html.Span(id="WELCOME_CONTENT_PART3"),
-            html.A(id="WELCOME_CONTENT_PART4", href="https://www.mdpi.com/2072-4292/11/1/48"),
-            
+            html.A(
+                id="WELCOME_CONTENT_PART4",
+                href="https://www.mdpi.com/2072-4292/11/1/48",
+            ),
             html.Span(id="WELCOME_CONTENT_PART5"),
         ]
     ),
@@ -97,7 +106,7 @@ MAP_TEXT = (
 
 HISTOGRAMA_TEXT = html.P(
     [
-        html.Span(id="HISTOGRAM_TEXT"),  
+        html.Span(id="HISTOGRAM_TEXT"),
         html.Ol(
             [
                 html.Li(html.Span(id="categoria-muy-frio")),
@@ -109,7 +118,7 @@ HISTOGRAMA_TEXT = html.P(
                 html.Li(html.Span(id="categoria-muy-caliente")),
             ]
         ),
-        html.Span(id="desviacion"), 
+        html.Span(id="desviacion"),
     ]
 )
 
@@ -221,19 +230,19 @@ def format_temp(temp):
 
 impactView = html.Div(
     [
-        html.H4(id = "impactView1", className="text-primary"),
-        html.Div(id = "impactView2", style=SUBTITLE_STYLE),
+        html.H4(id="impactView1", className="text-primary"),
+        html.Div(id="impactView2", style=SUBTITLE_STYLE),
         html.Div("", id="impact-result-degrees", style=RESULT_STYLE),
-        html.Div(id = "impactView3", style=SUBTITLE_STYLE),
+        html.Div(id="impactView3", style=SUBTITLE_STYLE),
         html.Div(
             "",
             id="impact-mitigated-degrees",
             className="text-success",
             style=RESULT_STYLE,
         ),
-        html.Div(id = "impactView4", style=SUBTITLE_STYLE),
+        html.Div(id="impactView4", style=SUBTITLE_STYLE),
         html.Div("", id="impact-result-square-kilometers", style=RESULT_STYLE),
-        html.Div(id = "impactView5", style=SUBTITLE_STYLE),
+        html.Div(id="impactView5", style=SUBTITLE_STYLE),
         html.Div("", id="impact-result-kilometers", style=RESULT_STYLE),
     ]
 )
@@ -250,12 +259,14 @@ strategyList = html.Div(
                             [
                                 html.P(
                                     html.Span(id="strat-vegetacion-title"),
-                                    #STRATEGIES["strat-vegetacion"]["title"],
+                                    # STRATEGIES["strat-vegetacion"]["title"],
                                     id="check-strat-vegetacion",
                                     style={"display": "inline"},
                                 ),
                                 dbc.Popover(
-                                    dbc.PopoverBody(html.Span(id="strat-vegetacion-desc")),
+                                    dbc.PopoverBody(
+                                        html.Span(id="strat-vegetacion-desc")
+                                    ),
                                     target="check-strat-vegetacion",
                                     trigger="hover",
                                 ),
@@ -273,7 +284,9 @@ strategyList = html.Div(
                                     style={"display": "inline"},
                                 ),
                                 dbc.Popover(
-                                    dbc.PopoverBody(html.Span(id="strat-techos-verdes-desc")),
+                                    dbc.PopoverBody(
+                                        html.Span(id="strat-techos-verdes-desc")
+                                    ),
                                     target="check-strat-techos-verdes",
                                     trigger="hover",
                                 ),
@@ -291,7 +304,9 @@ strategyList = html.Div(
                                     style={"display": "inline"},
                                 ),
                                 dbc.Popover(
-                                    dbc.PopoverBody(html.Span(id="strat-techos-frescos-desc")),
+                                    dbc.PopoverBody(
+                                        html.Span(id="strat-techos-frescos-desc")
+                                    ),
                                     target="check-strat-techos-frescos",
                                     trigger="hover",
                                 ),
@@ -304,12 +319,14 @@ strategyList = html.Div(
                         "label": html.Div(
                             [
                                 html.P(
-                                    html.Span(id = "strat-pavimento-concreto-title"),
+                                    html.Span(id="strat-pavimento-concreto-title"),
                                     id="check-strat-pavimento-concreto",
                                     style={"display": "inline"},
                                 ),
                                 dbc.Popover(
-                                    dbc.PopoverBody(html.Span(id = "strat-pavimento-concreto-desc")),
+                                    dbc.PopoverBody(
+                                        html.Span(id="strat-pavimento-concreto-desc")
+                                    ),
                                     target="check-strat-pavimento-concreto",
                                     trigger="hover",
                                 ),
@@ -322,12 +339,14 @@ strategyList = html.Div(
                         "label": html.Div(
                             [
                                 html.P(
-                                    html.Span(id = "strat-pavimento-reflector-title"),
+                                    html.Span(id="strat-pavimento-reflector-title"),
                                     id="check-strat-pavimento-reflector",
                                     style={"display": "inline"},
                                 ),
                                 dbc.Popover(
-                                    dbc.PopoverBody(html.Span(id = "strat-pavimento-reflector-desc")),
+                                    dbc.PopoverBody(
+                                        html.Span(id="strat-pavimento-reflector-desc")
+                                    ),
                                     target="check-strat-pavimento-reflector",
                                     trigger="hover",
                                 ),
@@ -511,12 +530,9 @@ plots = html.Div(
     [
         dbc.Row(
             [
-                figureWithDescription_translation2( # Version modificada para HISTOGRAMA_TEXT
-                    dcc.Graph(id="suhi-graph-areas"),
-                    HISTOGRAMA_TEXT,
-                    "title1"
+                figureWithDescription_translation2(  # Version modificada para HISTOGRAMA_TEXT
+                    dcc.Graph(id="suhi-graph-areas"), HISTOGRAMA_TEXT, "title1"
                 ),
-                
                 figureWithDescription_translation(
                     dcc.Graph(id="suhi-graph-temp-lc"),
                     "BARS_TEXT",
@@ -540,7 +556,7 @@ plots = html.Div(
 )
 
 welcomeAlert = dbc.Alert(WELCOME_CONTENT, color="secondary")
-mapIntroAlert = dbc.Alert(id = "MAP_INTRO_TEXT", color="light")
+mapIntroAlert = dbc.Alert(id="MAP_INTRO_TEXT", color="light")
 
 tabs = [
     dbc.Tab(
@@ -548,7 +564,7 @@ tabs = [
             [
                 html.Div(
                     [
-                        html.P(id = "temperature", style=SUBTITLE_STYLE),
+                        html.P(id="temperature", style=SUBTITLE_STYLE),
                         html.P(
                             id="suhi-p-urban-temp",
                             style=MEAN_TEMPERATURE_STYLE,
@@ -601,7 +617,7 @@ tabs = [
                         [
                             dbc.Col(
                                 dbc.Button(
-                                    #"Descargar rasters",
+                                    # "Descargar rasters",
                                     id="suhi-btn-download-rasters-normal",
                                     color="light",
                                     title="Descarga los rasters a Google Drive.",
@@ -610,7 +626,7 @@ tabs = [
                             ),
                             dbc.Col(
                                 dbc.Button(
-                                    #"Descargar rasters",
+                                    # "Descargar rasters",
                                     id="suhi-btn-download-rasters-raw",
                                     color="light",
                                     title="Descarga los rasters correspondientes a la diferencia rural a Google Drive. ",
@@ -619,7 +635,7 @@ tabs = [
                             ),
                             dbc.Col(
                                 dbc.Button(
-                                    #"Descargar rasters",
+                                    # "Descargar rasters",
                                     id="suhi-btn-download-rasters-celsius",
                                     color="light",
                                     title="Descarga los rasters en grados centígrados a Google Drive.",
@@ -628,13 +644,13 @@ tabs = [
                             ),
                         ],
                         justify="center",
-                        className="my-2"
+                        className="my-2",
                     ),
                     dbc.Row(
                         [
                             dbc.Col(
                                 dbc.Button(
-                                    #"Cancelar ejecución",
+                                    # "Cancelar ejecución",
                                     id="suhi-btn-stop-task",
                                     color="danger",
                                     style={"display": "none"},
@@ -643,7 +659,7 @@ tabs = [
                             ),
                             dbc.Col(
                                 dbc.Button(
-                                    #"Descargar CSV",
+                                    # "Descargar CSV",
                                     id="suhi-btn-download-csv",
                                     color="light",
                                     title="Descarga el archivo .csv, que alimenta las visualizaciones, localmente en tu carpeta de Descargas.",
@@ -653,7 +669,7 @@ tabs = [
                             dbc.Col(width=4),
                         ],
                         justify="center",
-                        className="my-2"
+                        className="my-2",
                     ),
                     dbc.Row(
                         dbc.Col(html.Span(id="suhi-span-rasters-output"), width=3),
@@ -663,7 +679,7 @@ tabs = [
             ),
         ],
         label="Descargables",
-        id = "tabDownloadables-suhi",
+        id="tabDownloadables-suhi",
     ),
 ]
 
@@ -705,35 +721,48 @@ layout = html.Div(
     style={"position": "relative"}
 )
 """
+
+
 @callback(
-    [Output(key, 'children') for key in translations.keys()],
-    [Input('current-language-store', 'data')]
+    [Output(key, "children") for key in translations.keys()],
+    [Input("current-language-store", "data")],
 )
 def update_translated_content(language_data):
-    language = language_data['language'] if language_data else 'es'
+    language = language_data["language"] if language_data else "es"
     updated_content = [translations[key][language] for key in translations.keys()]
     return updated_content
 
+
 # ---
 
+
 @callback(
-    [Output(key, 'label') for key in tab_translations.keys()],
-    [Input('btn-lang-es', 'n_clicks'),
-     Input('btn-lang-en', 'n_clicks'),
-     Input('btn-lang-pt', 'n_clicks')],
-    [State('current-language-store', 'data')],
+    [Output(key, "label") for key in tab_translations.keys()],
+    [
+        Input("btn-lang-es", "n_clicks"),
+        Input("btn-lang-en", "n_clicks"),
+        Input("btn-lang-pt", "n_clicks"),
+    ],
+    [State("current-language-store", "data")],
 )
 def update_tab_labels(btn_lang_es, btn_lang_en, btn_lang_pt, language_data):
     ctx = dash.callback_context
 
     if not ctx.triggered:
-        language = language_data['language'] if language_data else 'es'
+        language = language_data["language"] if language_data else "es"
     else:
-        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-        language = 'es' if button_id == 'btn-lang-es' else 'en' if button_id == 'btn-lang-en' else 'pt'
+        button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+        language = (
+            "es"
+            if button_id == "btn-lang-es"
+            else "en"
+            if button_id == "btn-lang-en"
+            else "pt"
+        )
 
     tab_labels = [tab_translations[key][language] for key in tab_translations.keys()]
     return tab_labels
+
 
 # ---
 
@@ -823,7 +852,8 @@ def download_file(n_clicks, id_hash):
 
 
 # Descargas
-    
+
+
 def _download_handler(n_clicks, id_hash, bbox_latlon, task_name, download_type):
     if n_clicks is None or n_clicks == 0:
         return dash.no_update, dash.no_update, dash.no_update
@@ -835,7 +865,7 @@ def _download_handler(n_clicks, id_hash, bbox_latlon, task_name, download_type):
 
         bbox_latlon = shape(bbox_latlon)
         bbox_ee = ru.bbox_to_ee(bbox_latlon)
-        
+
         lst, proj = ht.get_lst(bbox_ee, start_date, end_date)
         _, masks = wc.get_cover_and_masks(bbox_ee, proj)
 
@@ -860,6 +890,7 @@ def _download_handler(n_clicks, id_hash, bbox_latlon, task_name, download_type):
         return (False, status["name"], {"display": "block"}, "Iniciando descarga")
     else:
         return (dash.no_update, dash.no_update, dash.no_update, dash.no_update)
+
 
 @callback(
     Output("suhi-interval", "disabled", allow_duplicate=True),
@@ -926,9 +957,23 @@ def download_rasters(n_intervals, task_name):
     time_elapsed = (current_time - start_time).total_seconds()
 
     if state in ("COMPLETED", "FAILED", "CANCELLED", "SUCCEEDED"):
-        return [f"Status de la Descarga: {state}, Tiempo transcurrido: {int(time_elapsed)} segundos"], True, {"display": "none"}, None
-    
-    return [f"Status de la Descarga: {state}, Tiempo transcurrido: {int(time_elapsed)} segundos"], False, dash.no_update, dash.no_update
+        return (
+            [
+                f"Status de la Descarga: {state}, Tiempo transcurrido: {int(time_elapsed)} segundos"
+            ],
+            True,
+            {"display": "none"},
+            None,
+        )
+
+    return (
+        [
+            f"Status de la Descarga: {state}, Tiempo transcurrido: {int(time_elapsed)} segundos"
+        ],
+        False,
+        dash.no_update,
+        dash.no_update,
+    )
 
 
 @callback(
@@ -941,21 +986,36 @@ def download_rasters(n_intervals, task_name):
     Input("global-store-bbox-latlon", "data"),
     Input("global-store-fua-latlon", "data"),
     Input("global-store-uc-latlon", "data"),
-    Input('btn-lang-es', 'n_clicks'),
-    Input('btn-lang-en', 'n_clicks'),
-    Input('btn-lang-pt', 'n_clicks'),
-    [State('current-language-store', 'data')],
+    Input("btn-lang-es", "n_clicks"),
+    Input("btn-lang-en", "n_clicks"),
+    Input("btn-lang-pt", "n_clicks"),
+    [State("current-language-store", "data")],
 )
-def generate_maps(id_hash, bbox_latlon, fua_latlon, uc_latlon, btn_lang_es, btn_lang_en, btn_lang_pt, language_data):
+def generate_maps(
+    id_hash,
+    bbox_latlon,
+    fua_latlon,
+    uc_latlon,
+    btn_lang_es,
+    btn_lang_en,
+    btn_lang_pt,
+    language_data,
+):
     if id_hash is None:
         return [dash.no_update] * 5
-    
+
     ctx = dash.callback_context
     if not ctx.triggered:
-        language = language_data['language'] if language_data else 'es'
+        language = language_data["language"] if language_data else "es"
     else:
-        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-        language = 'es' if button_id == 'btn-lang-es' else 'en' if button_id == 'btn-lang-en' else 'pt'
+        button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+        language = (
+            "es"
+            if button_id == "btn-lang-es"
+            else "en"
+            if button_id == "btn-lang-en"
+            else "pt"
+        )
 
     path_cache = Path(f"./data/cache/{id_hash}")
 
@@ -975,22 +1035,22 @@ def generate_maps(id_hash, bbox_latlon, fua_latlon, uc_latlon, btn_lang_es, btn_
         df_t_areas = ht.load_or_get_t_areas(bbox_ee, img_cat, masks, path_cache)
         df_land_usage = ht.load_or_get_land_usage_df(bbox_ee, img_cat, path_cache)
 
-        temp_map = pht.plot_cat_map(
-            bbox_ee, fua_latlon.centroid, img_cat
-        )
-        areas_plot = pht.plot_temp_areas(df_t_areas, language=language) # 
-        
-        temps_by_lc_plot = pht.plot_temp_by_lc(df_land_usage, language=language) #
-        
+        temp_map = pht.plot_cat_map(bbox_ee, fua_latlon.centroid, img_cat)
+        areas_plot = pht.plot_temp_areas(df_t_areas, language=language)  #
+
+        temps_by_lc_plot = pht.plot_temp_by_lc(df_land_usage, language=language)  #
+
     except Exception as e:
         temp_map = dash.no_update
         areas_plot = dash.no_update
-        temps_by_lc_plot = dash.no_update        
+        temps_by_lc_plot = dash.no_update
 
-    df_f, df_lc = ht.load_or_get_radial_distributions(bbox_latlon, uc_latlon, start_date, end_date, path_cache)
-    
-    radial_temp_plot = pht.plot_radial_temperature(df_f, language=language) #
-    radial_lc_plot = pht.plot_radial_lc(df_lc, language=language) #
+    df_f, df_lc = ht.load_or_get_radial_distributions(
+        bbox_latlon, uc_latlon, start_date, end_date, path_cache
+    )
+
+    radial_temp_plot = pht.plot_radial_temperature(df_f, language=language)  #
+    radial_lc_plot = pht.plot_radial_lc(df_lc, language=language)  #
 
     return temp_map, areas_plot, temps_by_lc_plot, radial_temp_plot, radial_lc_plot
 

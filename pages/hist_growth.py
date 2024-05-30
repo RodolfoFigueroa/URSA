@@ -4,7 +4,11 @@ import dash_bootstrap_components as dbc
 import ursa.ghsl as ghsl
 import ursa.utils.geometry as ug
 
-from components.text import figureWithDescription, figureWithDescription_translation, figureWithDescription_translation2
+from components.text import (
+    figureWithDescription,
+    figureWithDescription_translation,
+    figureWithDescription_translation2,
+)
 from components.text import mapComponent
 from components.page import new_page_layout
 from dash import html, dcc, callback, Input, Output
@@ -15,43 +19,33 @@ from zipfile import ZipFile
 import json
 
 # Traducciones
-with open('./data/translations/hist_grow/translations_hist.json', 'r', encoding='utf-8') as file:
+with open(
+    "./data/translations/hist_grow/translations_hist.json", "r", encoding="utf-8"
+) as file:
     translations = json.load(file)
-    
+
 # Traducciones
-with open('./data/translations/hist_grow/tab_translations_hist.json', 'r', encoding='utf-8') as file:
+with open(
+    "./data/translations/hist_grow/tab_translations_hist.json", "r", encoding="utf-8"
+) as file:
     tab_translations = json.load(file)
 
 dash.register_page(__name__, title="URSA")
 
 WELCOME_TEXT = [
-    (
-        html.Div(id='WELCOME_TEXT_PART1')
-    ),
+    (html.Div(id="WELCOME_TEXT_PART1")),
     html.A("Global Human Settlement Layer", href="https://ghsl.jrc.ec.europa.eu/"),
-    (
-        html.Div(id='WELCOME_TEXT_PART2')
-    ),
+    (html.Div(id="WELCOME_TEXT_PART2")),
 ]
 
 MAP_INTRO_TEXT = [
-    (
-        html.Div(id='MAP_INTRO_TEXT_PART1')
-    ),
+    (html.Div(id="MAP_INTRO_TEXT_PART1")),
     html.Ul(
         [
-            html.Li(
-                id='MAP_INTRO_TEXT_PART2'
-            ),
-            html.Li(
-                id='MAP_INTRO_TEXT_PART3'
-            ),
-            html.Li(
-                id='MAP_INTRO_TEXT_PART4'
-            ),
-            html.Li(
-                id='MAP_INTRO_TEXT_PART5'
-            ),
+            html.Li(id="MAP_INTRO_TEXT_PART2"),
+            html.Li(id="MAP_INTRO_TEXT_PART3"),
+            html.Li(id="MAP_INTRO_TEXT_PART4"),
+            html.Li(id="MAP_INTRO_TEXT_PART5"),
         ]
     ),
 ]
@@ -122,7 +116,6 @@ LINE_GRAPH_TEXT_2 = html.Div(
 LINE_GRAPH_TEXT_3 = html.Div(
     [
         html.Acronym("GHSL", title="Global Human Settlement Layer"),
-        
         html.Span(id="LINE_GRAPH_TEXT_3"),
     ]
 )
@@ -147,34 +140,21 @@ de la misma infraestructura. """
 maps = html.Div(
     [
         html.Div(
-            [
-                html.H4(id="map-title-1"),  
-                mapComponent(title="", id="growth-map-1")  
-            ],
-            style={"margin-bottom": "20px"}  
+            [html.H4(id="map-title-1"), mapComponent(title="", id="growth-map-1")],
+            style={"margin-bottom": "20px"},
         ),
         html.Div(
-            [
-                html.H4(id="map-title-2"),  
-                mapComponent(title="", id="growth-map-2")  
-            ],
-            style={"margin-bottom": "20px"} 
+            [html.H4(id="map-title-2"), mapComponent(title="", id="growth-map-2")],
+            style={"margin-bottom": "20px"},
         ),
         html.Div(
-            [
-                html.H4(id="map-title-3"),  
-                mapComponent(title="", id="growth-map-3") 
-            ],
-            style={"margin-bottom": "20px"}  
+            [html.H4(id="map-title-3"), mapComponent(title="", id="growth-map-3")],
+            style={"margin-bottom": "20px"},
         ),
         html.Div(
-            [
-                html.H4(id="map-title-4"),  
-                mapComponent(title="", id="growth-map-4")  
-            ],
-            style={"margin-bottom": "20px"}  
-        )
-
+            [html.H4(id="map-title-4"), mapComponent(title="", id="growth-map-4")],
+            style={"margin-bottom": "20px"},
+        ),
     ],
     style={"height": "90vh", "overflow": "scroll"},
 )
@@ -182,38 +162,32 @@ maps = html.Div(
 lines = html.Div(
     [
         figureWithDescription_translation(
-        dcc.Graph(id="growth-lines-1"),
-        "LINE_GRAPH_TEXT_1",  # ID descripción
-        "sub1"  # ID título
+            dcc.Graph(id="growth-lines-1"),
+            "LINE_GRAPH_TEXT_1",  # ID descripción
+            "sub1",  # ID título
         ),
-        
         figureWithDescription_translation2(
-           dcc.Graph(id="growth-lines-2"), 
-            ["LINE_GRAPH_TEXT_2_PART1", "GHSL", "LINE_GRAPH_TEXT_2_PART2"], 
-            "sub2"  
+            dcc.Graph(id="growth-lines-2"),
+            ["LINE_GRAPH_TEXT_2_PART1", "GHSL", "LINE_GRAPH_TEXT_2_PART2"],
+            "sub2",
         ),
-        
         figureWithDescription_translation2(
-            dcc.Graph(id="growth-lines-3"), 
-            ["GHSL", "LINE_GRAPH_TEXT_3"], 
-            "sub3"
-        ),
-        
-        figureWithDescription_translation(
-        dcc.Graph(id="growth-lines-4"),
-        "LINE_GRAPH_TEXT_4",  # ID descripción
-        "sub4"  # ID título
-        ),
-        
-        figureWithDescription_translation(
-        dcc.Graph(id="growth-lines-5"),
-        "LINE_GRAPH_TEXT_5",  # ID descripción
-        "sub5"  # ID título
+            dcc.Graph(id="growth-lines-3"), ["GHSL", "LINE_GRAPH_TEXT_3"], "sub3"
         ),
         figureWithDescription_translation(
-        dcc.Graph(id="growth-lines-6"),
-        "LINE_GRAPH_TEXT_6",  # ID descripción
-        "sub6"  # ID título
+            dcc.Graph(id="growth-lines-4"),
+            "LINE_GRAPH_TEXT_4",  # ID descripción
+            "sub4",  # ID título
+        ),
+        figureWithDescription_translation(
+            dcc.Graph(id="growth-lines-5"),
+            "LINE_GRAPH_TEXT_5",  # ID descripción
+            "sub5",  # ID título
+        ),
+        figureWithDescription_translation(
+            dcc.Graph(id="growth-lines-6"),
+            "LINE_GRAPH_TEXT_6",  # ID descripción
+            "sub6",  # ID título
         ),
     ],
     style={"height": "82vh", "overflow": "scroll"},
@@ -235,20 +209,17 @@ urbanCellYearMapInfoAlert = dbc.Card(
     dbc.CardBody(
         [
             html.H4(id="sub8"),
-            html.Span(id = "MAP_HIST_URBAN_EXPANDED_TEXT"),
+            html.Span(id="MAP_HIST_URBAN_EXPANDED_TEXT"),
         ]
     ),
     class_name="supp-info",
 )
 contstructionFractionMapInfoAlert = dbc.Card(
-    dbc.CardBody([html.H4(id="sub9"), 
-                  
-                  html.Span(id = "MAP_BUILT_F_EXPANDED_TEXT")]),
+    dbc.CardBody([html.H4(id="sub9"), html.Span(id="MAP_BUILT_F_EXPANDED_TEXT")]),
     class_name="supp-info",
 )
 inhabitantsFractionMapInfoAlert = dbc.Card(
-    dbc.CardBody([html.H4(id = "sub10"), 
-                  html.Span(id = "MAP_POP_EXPANDED_TEXT")]),
+    dbc.CardBody([html.H4(id="sub10"), html.Span(id="MAP_POP_EXPANDED_TEXT")]),
     class_name="supp-info",
 )
 
@@ -271,7 +242,7 @@ download_button = html.Div(
             },
         ),
         dbc.Tooltip(
-            html.Span(id = "download-raster-instructions"),
+            html.Span(id="download-raster-instructions"),
             target="tooltip-target01",
         ),
     ]
@@ -281,7 +252,7 @@ download_button = html.Div(
 tabs = [
     dbc.Tab(
         lines,
-        label = "Gráficas",
+        label="Gráficas",
         id="tab-plots-hist",
         tab_id="tabPlots",
     ),
@@ -296,14 +267,13 @@ tabs = [
                 inhabitantsFractionMapInfoAlert,
             ]
         ),
-        label= "Info",
+        label="Info",
         id="tab-info-hist",
         tab_id="tabInfo",
     ),
     dbc.Tab(
         html.Div([download_button]),
-
-        label= "Descargables",
+        label="Descargables",
         id="tab-download-hist",
         tab_id="tabDownload",
     ),
@@ -326,7 +296,7 @@ layout = new_page_layout(
     stores=[dcc.Location(id="growth-location")],
     alerts=[
         dbc.Alert(
-           html.Span(id="charts-generation-error"),
+            html.Span(id="charts-generation-error"),
             id="growth-alert",
             is_open=False,
             dismissable=True,
@@ -341,37 +311,51 @@ layout = html.Div(
     style={"position": "relative"}
 )
 """
+
+
 @callback(
-    [Output(key, 'children') for key in translations.keys()],
-    [Input('current-language-store', 'data')]
+    [Output(key, "children") for key in translations.keys()],
+    [Input("current-language-store", "data")],
 )
 def update_translated_content(language_data):
-    language = language_data['language'] if language_data else 'es'
+    language = language_data["language"] if language_data else "es"
     updated_content = [translations[key][language] for key in translations.keys()]
     return updated_content
 
+
 # --
 
+
 @callback(
-    [Output(key, 'label') for key in tab_translations.keys()], 
-    [Input('btn-lang-es', 'n_clicks'),
-     Input('btn-lang-en', 'n_clicks'),
-     Input('btn-lang-pt', 'n_clicks')]
+    [Output(key, "label") for key in tab_translations.keys()],
+    [
+        Input("btn-lang-es", "n_clicks"),
+        Input("btn-lang-en", "n_clicks"),
+        Input("btn-lang-pt", "n_clicks"),
+    ],
 )
 def update_tab_labels(btn_lang_es, btn_lang_en, btn_lang_pt):
     ctx = dash.callback_context
 
     if not ctx.triggered:
-        language = 'es'  # Idioma predeterminado
+        language = "es"  # Idioma predeterminado
     else:
-        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-        language = 'es' if button_id == 'btn-lang-es' else 'en' if button_id == 'btn-lang-en' else 'pt'
+        button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+        language = (
+            "es"
+            if button_id == "btn-lang-es"
+            else "en"
+            if button_id == "btn-lang-en"
+            else "pt"
+        )
 
     tab_labels = [tab_translations[key][language] for key in tab_translations.keys()]
 
-    return tab_labels  
+    return tab_labels
+
 
 # ---
+
 
 @callback(
     Output("download-rasters-zip", "data"),
@@ -380,20 +364,19 @@ def update_tab_labels(btn_lang_es, btn_lang_en, btn_lang_pt):
     prevent_initial_call=True,
 )
 def download_file(id_hash, n_clicks):
-
     if id_hash is None:
         return [dash.no_update] * 11 + ["/"]
-    
+
     path_cache = Path(f"./data/cache/{str(id_hash)}")
 
     rasters: list[str] = [
         path_cache / "GHS_BUILT_S_100.tif",
-        #path_cache / 'GHS_LAND_100.tif',
+        # path_cache / 'GHS_LAND_100.tif',
         path_cache / "GHS_POP_100.tif",
         path_cache / "GHS_SMOD_1000.tif",
-        #path_cache / 'dou.tif',
-        #path_cache / 'protected.tif',
-        #path_cache / 'slope.tif'
+        # path_cache / 'dou.tif',
+        # path_cache / 'protected.tif',
+        # path_cache / 'slope.tif'
     ]
 
     zip_file_name: str = f"hist-growth-rasters.zip"
@@ -421,23 +404,33 @@ def download_file(id_hash, n_clicks):
     Output("growth-location", "pathname"),
     Input("global-store-hash", "data"),
     Input("global-store-bbox-latlon", "data"),
-    [Input("global-store-uc-latlon", "data"),
-    Input('btn-lang-es', 'n_clicks'),
-    Input('btn-lang-en', 'n_clicks'),
-    Input('btn-lang-pt', 'n_clicks')]
+    [
+        Input("global-store-uc-latlon", "data"),
+        Input("btn-lang-es", "n_clicks"),
+        Input("btn-lang-en", "n_clicks"),
+        Input("btn-lang-pt", "n_clicks"),
+    ],
 )
-def generate_lines(id_hash, bbox_latlon, uc_latlon, btn_lang_es, btn_lang_en, btn_lang_pt):
+def generate_lines(
+    id_hash, bbox_latlon, uc_latlon, btn_lang_es, btn_lang_en, btn_lang_pt
+):
     error_triggered = False
 
     if id_hash is None:
         return [dash.no_update] * 11 + ["/"]
-    
+
     ctx = dash.callback_context
     if not ctx.triggered:
-        language = 'es'  # Idioma predeterminado
+        language = "es"  # Idioma predeterminado
     else:
-        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-        language = 'es' if button_id == 'btn-lang-es' else 'en' if button_id == 'btn-lang-en' else 'pt'
+        button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+        language = (
+            "es"
+            if button_id == "btn-lang-es"
+            else "en"
+            if button_id == "btn-lang-en"
+            else "pt"
+        )
 
     path_cache = Path(f"./data/cache/{str(id_hash)}")
 
@@ -470,8 +463,7 @@ def generate_lines(id_hash, bbox_latlon, uc_latlon, btn_lang_es, btn_lang_en, bt
             "Area (km²)": "Área (km²)",
             "People per km²": "Personas por km²",
             "People per km² of Construction": "Personas por km² de construcción",
-            "Fraction of Built Area": "Fracción de área construida"
-            
+            "Fraction of Built Area": "Fracción de área construida",
         },
         "en": {
             "Urban Area": "Urban Area",
@@ -483,8 +475,7 @@ def generate_lines(id_hash, bbox_latlon, uc_latlon, btn_lang_es, btn_lang_en, bt
             "Area (km²)": "Area (km²)",
             "People per km²": "People per km²",
             "People per km² of Construction": "People per km² of Construction",
-            "Fraction of Built Area": "Fraction of Built Area"
-            
+            "Fraction of Built Area": "Fraction of Built Area",
         },
         "pt": {
             "Urban Area": "Área urbana",
@@ -496,13 +487,10 @@ def generate_lines(id_hash, bbox_latlon, uc_latlon, btn_lang_es, btn_lang_en, bt
             "Area (km²)": "Área (km²)",
             "People per km²": "Pessoas por km²",
             "People per km² of Construction": "Pessoas por km² de construção",
-            "Fraction of Built Area": "Fração da Área Construída"
-       
-        }
+            "Fraction of Built Area": "Fração da Área Construída",
+        },
     }
 
-
-    
     line_plot_params = [
         dict(
             y_cols=["urban_cluster_main", "urban_cluster_other"],
@@ -516,13 +504,11 @@ def generate_lines(id_hash, bbox_latlon, uc_latlon, btn_lang_es, btn_lang_en, bt
             ylabel=translations[language]["Built Area"],
             var_type="extensive",
         ),
-        # 
-        
         dict(
-        y_cols=["pop_cluster_main", "pop_cluster_other"],
-        title=translations[language]["Population"],
-        ylabel=translations[language]["Population"],
-        var_type="extensive",
+            y_cols=["pop_cluster_main", "pop_cluster_other"],
+            title=translations[language]["Population"],
+            ylabel=translations[language]["Population"],
+            var_type="extensive",
         ),
         dict(
             y_cols=[
@@ -559,18 +545,22 @@ def generate_lines(id_hash, bbox_latlon, uc_latlon, btn_lang_es, btn_lang_en, bt
     plots = []
     for params in line_plot_params:
         try:
-            lines = ghsl.plot_growth(growth_df, **params, language = language)
+            lines = ghsl.plot_growth(growth_df, **params, language=language)
             plots.append(lines)
         except Exception:
             plots.append(dash.no_update)
             error_triggered = True
 
-    map1 = ghsl.plot_built_agg_img(smod, built, bbox_mollweide, centroid_mollweide, language = language)
+    map1 = ghsl.plot_built_agg_img(
+        smod, built, bbox_mollweide, centroid_mollweide, language=language
+    )
     map2 = ghsl.plot_smod_clusters(smod, bbox_latlon, language=language)
     map3 = ghsl.plot_built_year_img(
-        smod, built, bbox_latlon, bbox_mollweide, centroid_mollweide, language = language
+        smod, built, bbox_latlon, bbox_mollweide, centroid_mollweide, language=language
     )
-    map4 = ghsl.plot_pop_year_img(smod, pop, bbox_mollweide, centroid_mollweide, language = language)
+    map4 = ghsl.plot_pop_year_img(
+        smod, pop, bbox_mollweide, centroid_mollweide, language=language
+    )
 
     plots.append(map1)
     plots.append(map2)

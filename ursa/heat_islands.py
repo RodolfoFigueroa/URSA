@@ -15,6 +15,7 @@ from ursa.utils.raster import bbox_to_ee
 
 MAX_PIXELS = 1e10
 
+
 def fmask(image):
     qa = image.select("QA_PIXEL")
 
@@ -49,7 +50,9 @@ def get_lst(bbox_ee, start_date, end_date):
     projection = filtered.first().projection()
     preped = filtered.map(prep_img)
     reduced = (
-        preped.reduce(ee.Reducer.mean()).setDefaultProjection(projection).select([0], ["ST_B10"])
+        preped.reduce(ee.Reducer.mean())
+        .setDefaultProjection(projection)
+        .select([0], ["ST_B10"])
     )
     reduced = reduced.multiply(0.00341802).add(149 - 273.15)
 
@@ -113,7 +116,7 @@ def get_cat_suhi(lst, masks, path_cache):
     rural_lst_mean = temps["rural"]["mean"]
     std = temps["total"]["std"]
     offsets = make_offsets(0, std)
-    
+
     unwanted_mask = masks["unwanted"]
 
     img_suhi = lst.subtract(rural_lst_mean)
@@ -135,7 +138,7 @@ def get_cat_suhi_raw(lst, masks, path_cache):
     temps = load_or_get_temps(lst, masks, path_cache)
 
     rural_lst_mean = temps["rural"]["mean"]
-    
+
     unwanted_mask = masks["unwanted"]
 
     img_suhi = lst.subtract(rural_lst_mean)
@@ -144,7 +147,7 @@ def get_cat_suhi_raw(lst, masks, path_cache):
     return img_suhi
 
 
-def get_cat_suhi_celsius(lst, masks):    
+def get_cat_suhi_celsius(lst, masks):
     unwanted_mask = masks["unwanted"]
 
     img_suhi = lst
@@ -348,7 +351,11 @@ def get_radial_lc(bbox_latlon, uc_latlon, lc):
 
 
 def load_or_get_radial_distributions(
-    bbox_latlon, uc_latlon, start_date, end_date, path_cache, 
+    bbox_latlon,
+    uc_latlon,
+    start_date,
+    end_date,
+    path_cache,
 ):
     fpath_f = path_cache / "radial_function.csv"
     fpath_lc = path_cache / "radial_lc.csv"
@@ -358,7 +365,7 @@ def load_or_get_radial_distributions(
         df_lc = pd.read_csv(fpath_lc, index_col="x")
     else:
         bbox_ee = bbox_to_ee(bbox_latlon)
-        
+
         lst, proj = get_lst(bbox_ee, start_date, end_date)
         lc, masks = wc.get_cover_and_masks(bbox_ee, proj)
 
@@ -369,7 +376,7 @@ def load_or_get_radial_distributions(
 
         suhi = lst.subtract(rural_lst_mean)
         suhi = suhi.updateMask(unwanted_mask)
-    
+
         df_lc = get_radial_lc(bbox_latlon, uc_latlon, lc)
         df_f = get_radial_f(bbox_latlon, uc_latlon, suhi)
 

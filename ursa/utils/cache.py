@@ -5,6 +5,7 @@ import geopandas as gpd
 from ursa.utils.geometry import geometry_to_json, hash_geometry
 from ursa.utils.raster import get_bboxes
 
+
 def generate_hash_files(path_cache):
     df = gpd.read_file(path_cache / "cities_fua.gpkg")
 
@@ -12,7 +13,7 @@ def generate_hash_files(path_cache):
     hashes_inv = {}
     for _, row in df.iterrows():
         country, city = row["country"], row["city"]
-        
+
         bbox, *_ = get_bboxes(city, country, path_cache)
         bbox_json = geometry_to_json(bbox)
         id_hash = hash_geometry(bbox_json)

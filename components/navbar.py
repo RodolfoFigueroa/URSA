@@ -89,33 +89,30 @@ navbar = dbc.Nav(
     pills=True,
 )
 
+
 def create_navbar(language):
     navbar_translations = {
-        'Inicio': {
-            'es': 'Inicio',
-            'en': 'Home',
-            'pt': 'Início'
+        "Inicio": {"es": "Inicio", "en": "Home", "pt": "Início"},
+        "Crecimiento histórico": {
+            "es": "Crecimiento histórico",
+            "en": "Historical Growth",
+            "pt": "Crescimento Histórico",
         },
-        'Crecimiento histórico': {
-            'es': 'Crecimiento histórico',
-            'en': 'Historical Growth',
-            'pt': 'Crescimento Histórico'
+        "Cobertura de suelo": {
+            "es": "Cobertura de suelo",
+            "en": "Land Cover",
+            "pt": "Cobertura do Solo",
         },
-        'Cobertura de suelo': {
-            'es': 'Cobertura de suelo',
-            'en': 'Land Cover',
-            'pt': 'Cobertura do Solo'
+        "Escenarios de futuro": {
+            "es": "Escenarios de futuro",
+            "en": "Future Scenarios",
+            "pt": "Cenários Futuros",
         },
-        'Escenarios de futuro': {
-            'es': 'Escenarios de futuro',
-            'en': 'Future Scenarios',
-            'pt': 'Cenários Futuros'
+        "Islas de calor": {
+            "es": "Islas de calor",
+            "en": "Heat Islands",
+            "pt": "Ilhas de Calor",
         },
-        'Islas de calor': {
-            'es': 'Islas de calor',
-            'en': 'Heat Islands',
-            'pt': 'Ilhas de Calor'
-        }
     }
 
     navbar = dbc.Nav(
@@ -128,7 +125,9 @@ def create_navbar(language):
                         href="/",
                         style=NAV_LINK_STYLE,
                     ),
-                    dbc.Tooltip(navbar_translations['Inicio'][language], target="home_link"),
+                    dbc.Tooltip(
+                        navbar_translations["Inicio"][language], target="home_link"
+                    ),
                 ]
             ),
             dbc.NavItem(
@@ -139,7 +138,10 @@ def create_navbar(language):
                         href="/hist-growth",
                         style=NAV_LINK_STYLE,
                     ),
-                    dbc.Tooltip(navbar_translations['Crecimiento histórico'][language], target="growth_link"),
+                    dbc.Tooltip(
+                        navbar_translations["Crecimiento histórico"][language],
+                        target="growth_link",
+                    ),
                 ]
             ),
             dbc.NavItem(
@@ -150,7 +152,10 @@ def create_navbar(language):
                         href="/land-cover",
                         style=NAV_LINK_STYLE,
                     ),
-                    dbc.Tooltip(navbar_translations['Cobertura de suelo'][language], target="lc_link"),
+                    dbc.Tooltip(
+                        navbar_translations["Cobertura de suelo"][language],
+                        target="lc_link",
+                    ),
                 ]
             ),
             dbc.NavItem(
@@ -161,7 +166,10 @@ def create_navbar(language):
                         href="/sleuth",
                         style=NAV_LINK_STYLE,
                     ),
-                    dbc.Tooltip(navbar_translations['Escenarios de futuro'][language], target="sleuth_link"),
+                    dbc.Tooltip(
+                        navbar_translations["Escenarios de futuro"][language],
+                        target="sleuth_link",
+                    ),
                 ]
             ),
             dbc.NavItem(
@@ -172,7 +180,10 @@ def create_navbar(language):
                         href="/suhi",
                         style=NAV_LINK_STYLE,
                     ),
-                    dbc.Tooltip(navbar_translations['Islas de calor'][language], target="suhi_link"),
+                    dbc.Tooltip(
+                        navbar_translations["Islas de calor"][language],
+                        target="suhi_link",
+                    ),
                 ]
             ),
         ],

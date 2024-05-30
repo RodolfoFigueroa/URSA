@@ -27,15 +27,21 @@ from shapely.geometry import shape
 from sleuth_sklearn.estimator import SLEUTH
 
 # Traducciones
-with open('./data/translations/sleuth/translations_sleuth.json', 'r', encoding='utf-8') as file:
+with open(
+    "./data/translations/sleuth/translations_sleuth.json", "r", encoding="utf-8"
+) as file:
     translations = json.load(file)
-    
-with open('./data/translations/sleuth/translations2_sleuth.json', 'r', encoding='utf-8') as file:
+
+with open(
+    "./data/translations/sleuth/translations2_sleuth.json", "r", encoding="utf-8"
+) as file:
     translations2 = json.load(file)
-    
-with open('./data/translations/sleuth/tab_translations_sleuth.json', 'r', encoding='utf-8') as file:
+
+with open(
+    "./data/translations/sleuth/tab_translations_sleuth.json", "r", encoding="utf-8"
+) as file:
     tab_translations = json.load(file)
-    
+
 RASTER_FIELDS = ["slope", "roads", "excluded", "urban"]
 RASTER_FIELD_MAP = {
     "slope": "Pendiente",
@@ -74,7 +80,10 @@ tab_slope = dbc.Tab(
                                         dbc.Col(
                                             dbc.Button(
                                                 html.Span(id="rasters-text1-slope"),
-                                                id={"type": "btn-download-orig-raster", "field": "slope"},
+                                                id={
+                                                    "type": "btn-download-orig-raster",
+                                                    "field": "slope",
+                                                },
                                                 className="text-center",
                                             ),
                                             class_name="text-center",
@@ -85,7 +94,10 @@ tab_slope = dbc.Tab(
                                         dbc.Col(
                                             dbc.Button(
                                                 html.Span(id="rasters-text2-slope"),
-                                                id={"type": "btn-download-raster", "field": "slope"},
+                                                id={
+                                                    "type": "btn-download-raster",
+                                                    "field": "slope",
+                                                },
                                                 className="text-center",
                                             ),
                                             class_name="text-center",
@@ -96,7 +108,10 @@ tab_slope = dbc.Tab(
                                         dbc.Col(
                                             dbc.Button(
                                                 html.Span(id="rasters-text3-slope"),
-                                                id={"type": "btn-restore-raster", "field": "slope"},
+                                                id={
+                                                    "type": "btn-restore-raster",
+                                                    "field": "slope",
+                                                },
                                                 className="bg-danger text-center",
                                             ),
                                             class_name="text-center",
@@ -113,11 +128,20 @@ tab_slope = dbc.Tab(
                                                 dcc.Upload(
                                                     html.Div(
                                                         [
-                                                            html.Span(id="rasters-text5-slope"),
-                                                            html.A(html.Span(id="rasters-text6-slope"))
+                                                            html.Span(
+                                                                id="rasters-text5-slope"
+                                                            ),
+                                                            html.A(
+                                                                html.Span(
+                                                                    id="rasters-text6-slope"
+                                                                )
+                                                            ),
                                                         ]
                                                     ),
-                                                    id={"type": "upload-raster", "field": "slope"},
+                                                    id={
+                                                        "type": "upload-raster",
+                                                        "field": "slope",
+                                                    },
                                                     style={
                                                         "width": "100%",
                                                         "height": "60px",
@@ -143,7 +167,7 @@ tab_slope = dbc.Tab(
         )
     ],
     label="Pendiente",
-    id = "rasters-slope",
+    id="rasters-slope",
 )
 
 tab_roads = dbc.Tab(
@@ -167,7 +191,10 @@ tab_roads = dbc.Tab(
                                         dbc.Col(
                                             dbc.Button(
                                                 html.Span(id="rasters-text1-roads"),
-                                                id={"type": "btn-download-orig-raster", "field": "roads"},
+                                                id={
+                                                    "type": "btn-download-orig-raster",
+                                                    "field": "roads",
+                                                },
                                                 className="text-center",
                                             ),
                                             class_name="text-center",
@@ -178,7 +205,10 @@ tab_roads = dbc.Tab(
                                         dbc.Col(
                                             dbc.Button(
                                                 html.Span(id="rasters-text2-roads"),
-                                                id={"type": "btn-download-raster", "field": "roads"},
+                                                id={
+                                                    "type": "btn-download-raster",
+                                                    "field": "roads",
+                                                },
                                                 className="text-center",
                                             ),
                                             class_name="text-center",
@@ -189,7 +219,10 @@ tab_roads = dbc.Tab(
                                         dbc.Col(
                                             dbc.Button(
                                                 html.Span(id="rasters-text3-roads"),
-                                                id={"type": "btn-restore-raster", "field": "roads"},
+                                                id={
+                                                    "type": "btn-restore-raster",
+                                                    "field": "roads",
+                                                },
                                                 className="bg-danger text-center",
                                             ),
                                             class_name="text-center",
@@ -206,11 +239,20 @@ tab_roads = dbc.Tab(
                                                 dcc.Upload(
                                                     html.Div(
                                                         [
-                                                            html.Span(id="rasters-text5-roads"),
-                                                            html.A(html.Span(id="rasters-text6-roads"))
+                                                            html.Span(
+                                                                id="rasters-text5-roads"
+                                                            ),
+                                                            html.A(
+                                                                html.Span(
+                                                                    id="rasters-text6-roads"
+                                                                )
+                                                            ),
                                                         ]
                                                     ),
-                                                    id={"type": "upload-raster", "field": "roads"},
+                                                    id={
+                                                        "type": "upload-raster",
+                                                        "field": "roads",
+                                                    },
                                                     style={
                                                         "width": "100%",
                                                         "height": "60px",
@@ -236,7 +278,7 @@ tab_roads = dbc.Tab(
         )
     ],
     label="Caminos",
-    id = "rasters-roads",
+    id="rasters-roads",
 )
 
 
@@ -261,7 +303,10 @@ tab_excluded = dbc.Tab(
                                         dbc.Col(
                                             dbc.Button(
                                                 html.Span(id="rasters-text1-excluded"),
-                                                id={"type": "btn-download-orig-raster", "field": "excluded"},
+                                                id={
+                                                    "type": "btn-download-orig-raster",
+                                                    "field": "excluded",
+                                                },
                                                 className="text-center",
                                             ),
                                             class_name="text-center",
@@ -272,7 +317,10 @@ tab_excluded = dbc.Tab(
                                         dbc.Col(
                                             dbc.Button(
                                                 html.Span(id="rasters-text2-excluded"),
-                                                id={"type": "btn-download-raster", "field": "excluded"},
+                                                id={
+                                                    "type": "btn-download-raster",
+                                                    "field": "excluded",
+                                                },
                                                 className="text-center",
                                             ),
                                             class_name="text-center",
@@ -283,7 +331,10 @@ tab_excluded = dbc.Tab(
                                         dbc.Col(
                                             dbc.Button(
                                                 html.Span(id="rasters-text3-excluded"),
-                                                id={"type": "btn-restore-raster", "field": "excluded"},
+                                                id={
+                                                    "type": "btn-restore-raster",
+                                                    "field": "excluded",
+                                                },
                                                 className="bg-danger text-center",
                                             ),
                                             class_name="text-center",
@@ -294,17 +345,28 @@ tab_excluded = dbc.Tab(
                                         dbc.Col(
                                             [
                                                 html.P(
-                                                    html.Span(id="rasters-text4-excluded"),
+                                                    html.Span(
+                                                        id="rasters-text4-excluded"
+                                                    ),
                                                     className="mt-4",
                                                 ),
                                                 dcc.Upload(
                                                     html.Div(
                                                         [
-                                                            html.Span(id="rasters-text5-excluded"),
-                                                            html.A(html.Span(id="rasters-text6-excluded"))
+                                                            html.Span(
+                                                                id="rasters-text5-excluded"
+                                                            ),
+                                                            html.A(
+                                                                html.Span(
+                                                                    id="rasters-text6-excluded"
+                                                                )
+                                                            ),
                                                         ]
                                                     ),
-                                                    id={"type": "upload-raster", "field": "excluded"},
+                                                    id={
+                                                        "type": "upload-raster",
+                                                        "field": "excluded",
+                                                    },
                                                     style={
                                                         "width": "100%",
                                                         "height": "60px",
@@ -330,7 +392,7 @@ tab_excluded = dbc.Tab(
         )
     ],
     label="Exclusión",
-    id = "rasters-excluded",
+    id="rasters-excluded",
 )
 
 
@@ -355,7 +417,10 @@ tab_urban = dbc.Tab(
                                         dbc.Col(
                                             dbc.Button(
                                                 html.Span(id="rasters-text1-urban"),
-                                                id={"type": "btn-download-orig-raster", "field": "urban"},
+                                                id={
+                                                    "type": "btn-download-orig-raster",
+                                                    "field": "urban",
+                                                },
                                                 className="text-center",
                                             ),
                                             class_name="text-center",
@@ -366,7 +431,10 @@ tab_urban = dbc.Tab(
                                         dbc.Col(
                                             dbc.Button(
                                                 html.Span(id="rasters-text2-urban"),
-                                                id={"type": "btn-download-raster", "field": "urban"},
+                                                id={
+                                                    "type": "btn-download-raster",
+                                                    "field": "urban",
+                                                },
                                                 className="text-center",
                                             ),
                                             class_name="text-center",
@@ -377,7 +445,10 @@ tab_urban = dbc.Tab(
                                         dbc.Col(
                                             dbc.Button(
                                                 html.Span(id="rasters-text3-urban"),
-                                                id={"type": "btn-restore-raster", "field": "urban"},
+                                                id={
+                                                    "type": "btn-restore-raster",
+                                                    "field": "urban",
+                                                },
                                                 className="bg-danger text-center",
                                             ),
                                             class_name="text-center",
@@ -394,11 +465,20 @@ tab_urban = dbc.Tab(
                                                 dcc.Upload(
                                                     html.Div(
                                                         [
-                                                            html.Span(id="rasters-text5-urban"),
-                                                            html.A(html.Span(id="rasters-text6-urban"))
+                                                            html.Span(
+                                                                id="rasters-text5-urban"
+                                                            ),
+                                                            html.A(
+                                                                html.Span(
+                                                                    id="rasters-text6-urban"
+                                                                )
+                                                            ),
                                                         ]
                                                     ),
-                                                    id={"type": "upload-raster", "field": "urban"},
+                                                    id={
+                                                        "type": "upload-raster",
+                                                        "field": "urban",
+                                                    },
                                                     style={
                                                         "width": "100%",
                                                         "height": "60px",
@@ -424,7 +504,7 @@ tab_urban = dbc.Tab(
         )
     ],
     label="Urbano",
-    id = "rasters-urban",
+    id="rasters-urban",
 )
 
 subsubtabs = [tab_slope, tab_roads, tab_excluded, tab_urban]
@@ -437,7 +517,7 @@ downloads = [
     dcc.Download(id={"type": "download-raster", "field": "excluded"}),
     dcc.Download(id={"type": "download-orig-raster", "field": "urban"}),
     dcc.Download(id={"type": "download-raster", "field": "urban"}),
-    dcc.Download(id="download-predicted-rasters")
+    dcc.Download(id="download-predicted-rasters"),
 ]
 
 tab0_content = dbc.Card(dbc.CardBody(dbc.Tabs(subsubtabs)))
@@ -457,10 +537,11 @@ subtab_1 = dbc.Card(
                             dbc.InputGroup(
                                 [
                                     dbc.InputGroupText(
-                                        sl.help_text_translation("calibration-text2",
-                                                                 translations2["calibration-text3"]["es"],
-                                                                 "calibration-text3")
-                        
+                                        sl.help_text_translation(
+                                            "calibration-text2",
+                                            translations2["calibration-text3"]["es"],
+                                            "calibration-text3",
+                                        )
                                     ),
                                     dbc.Select(
                                         required=True,
@@ -476,9 +557,11 @@ subtab_1 = dbc.Card(
                             dbc.InputGroup(
                                 [
                                     dbc.InputGroupText(
-                                        sl.help_text_translation("calibration-text4",
-                                                                 translations2["calibration-text5"]["es"],
-                                                                 "calibration-text5")
+                                        sl.help_text_translation(
+                                            "calibration-text4",
+                                            translations2["calibration-text5"]["es"],
+                                            "calibration-text5",
+                                        )
                                     ),
                                     dbc.Select(
                                         required=True,
@@ -500,9 +583,11 @@ subtab_1 = dbc.Card(
                             dbc.InputGroup(
                                 [
                                     dbc.InputGroupText(
-                                        sl.help_text_translation("calibration-text7",
-                                                                 translations2["calibration-text8"]["es"],
-                                                                 "calibration-text8")
+                                        sl.help_text_translation(
+                                            "calibration-text7",
+                                            translations2["calibration-text8"]["es"],
+                                            "calibration-text8",
+                                        )
                                     ),
                                     dbc.Input(
                                         type="number",
@@ -523,9 +608,11 @@ subtab_1 = dbc.Card(
                             dbc.InputGroup(
                                 [
                                     dbc.InputGroupText(
-                                        sl.help_text_translation("calibration-text9",
-                                                                 translations2["calibration-text10"]["es"],
-                                                                 "calibration-text10")
+                                        sl.help_text_translation(
+                                            "calibration-text9",
+                                            translations2["calibration-text10"]["es"],
+                                            "calibration-text10",
+                                        )
                                     ),
                                     dbc.Input(
                                         type="number",
@@ -551,9 +638,11 @@ subtab_1 = dbc.Card(
                             dbc.InputGroup(
                                 [
                                     dbc.InputGroupText(
-                                        sl.help_text_translation("calibration-text12",
-                                                                 translations2["calibration-text13"]["es"],
-                                                                 "calibration-text13")
+                                        sl.help_text_translation(
+                                            "calibration-text12",
+                                            translations2["calibration-text13"]["es"],
+                                            "calibration-text13",
+                                        )
                                     ),
                                     dbc.Input(
                                         type="number",
@@ -574,9 +663,11 @@ subtab_1 = dbc.Card(
                             dbc.InputGroup(
                                 [
                                     dbc.InputGroupText(
-                                        sl.help_text_translation("calibration-text14",
-                                                                 translations2["calibration-text15"]["es"],
-                                                                 "calibration-text15")
+                                        sl.help_text_translation(
+                                            "calibration-text14",
+                                            translations2["calibration-text15"]["es"],
+                                            "calibration-text15",
+                                        )
                                     ),
                                     dbc.Input(
                                         type="number",
@@ -597,9 +688,11 @@ subtab_1 = dbc.Card(
                             dbc.InputGroup(
                                 [
                                     dbc.InputGroupText(
-                                        sl.help_text_translation("calibration-text16",
-                                                                 translations2["calibration-text17"]["es"],
-                                                                 "calibration-text17")
+                                        sl.help_text_translation(
+                                            "calibration-text16",
+                                            translations2["calibration-text17"]["es"],
+                                            "calibration-text17",
+                                        )
                                     ),
                                     dbc.Input(
                                         type="number",
@@ -625,9 +718,11 @@ subtab_1 = dbc.Card(
                         dbc.InputGroup(
                             [
                                 dbc.InputGroupText(
-                                    sl.help_text_translation("calibration-text19",
-                                                                 translations2["calibration-text20"]["es"],
-                                                                 "calibration-text20")
+                                    sl.help_text_translation(
+                                        "calibration-text19",
+                                        translations2["calibration-text20"]["es"],
+                                        "calibration-text20",
+                                    )
                                 ),
                                 dbc.Input(
                                     type="number",
@@ -662,9 +757,12 @@ subrow_2_diffusion = dbc.Row(
             dbc.InputGroup(
                 [
                     dbc.InputGroupText(
-                    sl.help_text_translation("coeficientes-text1-diffusion",
-                                             translations2["coeficientes-text2-diffusion"]["es"],
-                                             "coeficientes-text2-diffusion")),
+                        sl.help_text_translation(
+                            "coeficientes-text1-diffusion",
+                            translations2["coeficientes-text2-diffusion"]["es"],
+                            "coeficientes-text2-diffusion",
+                        )
+                    ),
                     dbc.Input(
                         type="number",
                         required=True,
@@ -681,9 +779,12 @@ subrow_2_diffusion = dbc.Row(
             dbc.InputGroup(
                 [
                     dbc.InputGroupText(
-                    sl.help_text_translation("coeficientes-text3-diffusion",
-                                             translations2["coeficientes-text4-diffusion"]["es"],
-                                             "coeficientes-text4-diffusion")),
+                        sl.help_text_translation(
+                            "coeficientes-text3-diffusion",
+                            translations2["coeficientes-text4-diffusion"]["es"],
+                            "coeficientes-text4-diffusion",
+                        )
+                    ),
                     dbc.Input(
                         type="number",
                         required=True,
@@ -708,9 +809,12 @@ subrow_2_breed = dbc.Row(
             dbc.InputGroup(
                 [
                     dbc.InputGroupText(
-                    sl.help_text_translation("coeficientes-text1-breed",
-                                             translations2["coeficientes-text2-breed"]["es"],
-                                             "coeficientes-text2-breed")),
+                        sl.help_text_translation(
+                            "coeficientes-text1-breed",
+                            translations2["coeficientes-text2-breed"]["es"],
+                            "coeficientes-text2-breed",
+                        )
+                    ),
                     dbc.Input(
                         type="number",
                         required=True,
@@ -727,9 +831,11 @@ subrow_2_breed = dbc.Row(
             dbc.InputGroup(
                 [
                     dbc.InputGroupText(
-                    sl.help_text_translation("coeficientes-text3-breed",
-                                             translations2["coeficientes-text4-breed"]["es"],
-                                             "coeficientes-text4-breed")
+                        sl.help_text_translation(
+                            "coeficientes-text3-breed",
+                            translations2["coeficientes-text4-breed"]["es"],
+                            "coeficientes-text4-breed",
+                        )
                     ),
                     dbc.Input(
                         type="number",
@@ -755,9 +861,11 @@ subrow_2_spread = dbc.Row(
             dbc.InputGroup(
                 [
                     dbc.InputGroupText(
-                    sl.help_text_translation("coeficientes-text1-spread",
-                                             translations2["coeficientes-text2-spread"]["es"],
-                                             "coeficientes-text2-spread")
+                        sl.help_text_translation(
+                            "coeficientes-text1-spread",
+                            translations2["coeficientes-text2-spread"]["es"],
+                            "coeficientes-text2-spread",
+                        )
                     ),
                     dbc.Input(
                         type="number",
@@ -775,9 +883,11 @@ subrow_2_spread = dbc.Row(
             dbc.InputGroup(
                 [
                     dbc.InputGroupText(
-                    sl.help_text_translation("coeficientes-text3-spread",
-                                             translations2["coeficientes-text4-spread"]["es"],
-                                             "coeficientes-text4-spread")
+                        sl.help_text_translation(
+                            "coeficientes-text3-spread",
+                            translations2["coeficientes-text4-spread"]["es"],
+                            "coeficientes-text4-spread",
+                        )
                     ),
                     dbc.Input(
                         type="number",
@@ -803,9 +913,11 @@ subrow_2_slope = dbc.Row(
             dbc.InputGroup(
                 [
                     dbc.InputGroupText(
-                    sl.help_text_translation("coeficientes-text1-slope",
-                                             translations2["coeficientes-text2-slope"]["es"],
-                                             "coeficientes-text2-slope")
+                        sl.help_text_translation(
+                            "coeficientes-text1-slope",
+                            translations2["coeficientes-text2-slope"]["es"],
+                            "coeficientes-text2-slope",
+                        )
                     ),
                     dbc.Input(
                         type="number",
@@ -823,9 +935,11 @@ subrow_2_slope = dbc.Row(
             dbc.InputGroup(
                 [
                     dbc.InputGroupText(
-                    sl.help_text_translation("coeficientes-text3-slope",
-                                             translations2["coeficientes-text4-slope"]["es"],
-                                             "coeficientes-text4-slope")
+                        sl.help_text_translation(
+                            "coeficientes-text3-slope",
+                            translations2["coeficientes-text4-slope"]["es"],
+                            "coeficientes-text4-slope",
+                        )
                     ),
                     dbc.Input(
                         type="number",
@@ -851,9 +965,11 @@ subrow_2_road = dbc.Row(
             dbc.InputGroup(
                 [
                     dbc.InputGroupText(
-                    sl.help_text_translation("coeficientes-text1-road",
-                                             translations2["coeficientes-text2-road"]["es"],
-                                             "coeficientes-text2-road")
+                        sl.help_text_translation(
+                            "coeficientes-text1-road",
+                            translations2["coeficientes-text2-road"]["es"],
+                            "coeficientes-text2-road",
+                        )
                     ),
                     dbc.Input(
                         type="number",
@@ -871,9 +987,11 @@ subrow_2_road = dbc.Row(
             dbc.InputGroup(
                 [
                     dbc.InputGroupText(
-                    sl.help_text_translation("coeficientes-text3-road",
-                                             translations2["coeficientes-text4-road"]["es"],
-                                             "coeficientes-text4-road")
+                        sl.help_text_translation(
+                            "coeficientes-text3-road",
+                            translations2["coeficientes-text4-road"]["es"],
+                            "coeficientes-text4-road",
+                        )
                     ),
                     dbc.Input(
                         type="number",
@@ -935,7 +1053,7 @@ calibration_summary = html.Div(
                 [
                     html.Li(
                         [
-                            html.Span(html.B(id = "simulacion-text2")),
+                            html.Span(html.B(id="simulacion-text2")),
                             html.Span(
                                 id={"type": "result-calibration", "field": "start-year"}
                             ),
@@ -947,7 +1065,7 @@ calibration_summary = html.Div(
                     ),
                     html.Li(
                         [
-                            html.Span(html.B(id = "simulacion-text3")),
+                            html.Span(html.B(id="simulacion-text3")),
                             html.Span(
                                 id={"type": "result-calibration", "field": "n-iters"}
                             ),
@@ -955,7 +1073,7 @@ calibration_summary = html.Div(
                     ),
                     html.Li(
                         [
-                            html.Span(html.B(id = "simulacion-text4")),
+                            html.Span(html.B(id="simulacion-text4")),
                             html.Span(
                                 id={
                                     "type": "result-calibration",
@@ -966,7 +1084,7 @@ calibration_summary = html.Div(
                     ),
                     html.Li(
                         [
-                            html.Span(html.B(id = "simulacion-text5")),
+                            html.Span(html.B(id="simulacion-text5")),
                             html.Span(
                                 id={
                                     "type": "result-calibration",
@@ -977,7 +1095,7 @@ calibration_summary = html.Div(
                     ),
                     html.Li(
                         [
-                            html.Span(html.B(id = "simulacion-text6")),
+                            html.Span(html.B(id="simulacion-text6")),
                             html.Span(
                                 id={
                                     "type": "result-calibration",
@@ -988,7 +1106,7 @@ calibration_summary = html.Div(
                     ),
                     html.Li(
                         [
-                            html.Span(html.B(id = "simulacion-text7")),
+                            html.Span(html.B(id="simulacion-text7")),
                             html.Span(
                                 id={
                                     "type": "result-calibration",
@@ -999,7 +1117,7 @@ calibration_summary = html.Div(
                     ),
                     html.Li(
                         [
-                            html.Span(html.B(id = "simulacion-text8")),
+                            html.Span(html.B(id="simulacion-text8")),
                             html.Span(
                                 id={
                                     "type": "result-calibration",
@@ -1017,40 +1135,40 @@ calibration_summary = html.Div(
         ),
         html.H4(html.Span(id="simulacion-text10"), className="mt-2"),
         html.Ul(
-    [
-        html.Li(
             [
-                html.Span(html.B(id = "Pendiente-faltante")),
-                html.Span(
-                    id={"type": "result-custom-raster", "field": "slope"}
+                html.Li(
+                    [
+                        html.Span(html.B(id="Pendiente-faltante")),
+                        html.Span(
+                            id={"type": "result-custom-raster", "field": "slope"}
+                        ),
+                    ]
+                ),
+                html.Li(
+                    [
+                        html.Span(html.B(id="Caminos-faltante")),
+                        html.Span(
+                            id={"type": "result-custom-raster", "field": "roads"}
+                        ),
+                    ]
+                ),
+                html.Li(
+                    [
+                        html.Span(html.B(id="Exclusion-faltante")),
+                        html.Span(
+                            id={"type": "result-custom-raster", "field": "excluded"}
+                        ),
+                    ]
+                ),
+                html.Li(
+                    [
+                        html.Span(html.B(id="Urbano-faltante")),
+                        html.Span(
+                            id={"type": "result-custom-raster", "field": "urban"}
+                        ),
+                    ]
                 ),
             ]
-        ),
-        html.Li(
-            [
-                html.Span(html.B(id = "Caminos-faltante")),
-                html.Span(
-                    id={"type": "result-custom-raster", "field": "roads"}
-                ),
-            ]
-        ),
-        html.Li(
-            [
-                html.Span(html.B(id = "Exclusion-faltante")),
-                html.Span(
-                    id={"type": "result-custom-raster", "field": "excluded"}
-                ),
-            ]
-        ),
-        html.Li(
-            [
-                html.Span(html.B(id = "Urbano-faltante")),
-                html.Span(
-                    id={"type": "result-custom-raster", "field": "urban"}
-                ),
-            ]
-        )
-    ]
         ),
     ],
 )
@@ -1074,9 +1192,11 @@ tab1_content = dbc.Card(
     dbc.CardBody(
         dbc.Tabs(
             [
-                dbc.Tab(subtab_1, label="Parámetros", id = "parametros-calibracion"),
-                dbc.Tab(subtab_3, label="Espacio de búsqueda", id = "espacio-calibracion"),
-                dbc.Tab(subtab_5, label="Iniciar", id = "iniciar-calibracion"),
+                dbc.Tab(subtab_1, label="Parámetros", id="parametros-calibracion"),
+                dbc.Tab(
+                    subtab_3, label="Espacio de búsqueda", id="espacio-calibracion"
+                ),
+                dbc.Tab(subtab_5, label="Iniciar", id="iniciar-calibracion"),
                 dbc.Tab(
                     subtab_6,
                     label="Resultados",
@@ -1096,16 +1216,18 @@ subtab_2_1 = dbc.Card(
     dbc.CardBody(
         dbc.Container(
             [
-                dbc.Row(dbc.Col(html.H4(html.Span(id = "prediccion-text1")))),
+                dbc.Row(dbc.Col(html.H4(html.Span(id="prediccion-text1")))),
                 dbc.Row(
                     [
                         dbc.Col(
                             dbc.InputGroup(
                                 [
                                     dbc.InputGroupText(
-                                        sl.help_text_translation("prediccion-text2",
-                                             translations2["prediccion-text3"]["es"],
-                                             "prediccion-text3")
+                                        sl.help_text_translation(
+                                            "prediccion-text2",
+                                            translations2["prediccion-text3"]["es"],
+                                            "prediccion-text3",
+                                        )
                                     ),
                                     dbc.Select(
                                         required=True,
@@ -1121,9 +1243,11 @@ subtab_2_1 = dbc.Card(
                             dbc.InputGroup(
                                 [
                                     dbc.InputGroupText(
-                                        sl.help_text_translation("prediccion-text4",
-                                             translations2["prediccion-text5"]["es"],
-                                             "prediccion-text5")
+                                        sl.help_text_translation(
+                                            "prediccion-text4",
+                                            translations2["prediccion-text5"]["es"],
+                                            "prediccion-text5",
+                                        )
                                     ),
                                     dbc.Input(
                                         type="number",
@@ -1143,16 +1267,18 @@ subtab_2_1 = dbc.Card(
                     ],
                     className="mb-4",
                 ),
-                dbc.Row(dbc.Col(html.Span(id = "prediccion-text6"))),
+                dbc.Row(dbc.Col(html.Span(id="prediccion-text6"))),
                 dbc.Row(
                     [
                         dbc.Col(
                             dbc.InputGroup(
                                 [
                                     dbc.InputGroupText(
-                                        sl.help_text_translation("prediccion-text7",
-                                             translations2["prediccion-text8"]["es"],
-                                             "prediccion-text8")
+                                        sl.help_text_translation(
+                                            "prediccion-text7",
+                                            translations2["prediccion-text8"]["es"],
+                                            "prediccion-text8",
+                                        )
                                     ),
                                     dbc.Input(
                                         type="number",
@@ -1173,9 +1299,11 @@ subtab_2_1 = dbc.Card(
                             dbc.InputGroup(
                                 [
                                     dbc.InputGroupText(
-                                        sl.help_text_translation("prediccion-text9",
-                                             translations2["prediccion-text10"]["es"],
-                                             "prediccion-text10")
+                                        sl.help_text_translation(
+                                            "prediccion-text9",
+                                            translations2["prediccion-text10"]["es"],
+                                            "prediccion-text10",
+                                        )
                                     ),
                                     dbc.Input(
                                         type="number",
@@ -1194,15 +1322,17 @@ subtab_2_1 = dbc.Card(
                     ],
                     className="mb-4",
                 ),
-                dbc.Row(dbc.Col(html.H4(html.Span(id = "prediccion-text11")))),
+                dbc.Row(dbc.Col(html.H4(html.Span(id="prediccion-text11")))),
                 dbc.Row(
                     dbc.Col(
                         dbc.InputGroup(
                             [
                                 dbc.InputGroupText(
-                                    sl.help_text_translation("prediccion-text12",
-                                             translations2["prediccion-text13"]["es"],
-                                             "prediccion-text13")
+                                    sl.help_text_translation(
+                                        "prediccion-text12",
+                                        translations2["prediccion-text13"]["es"],
+                                        "prediccion-text13",
+                                    )
                                 ),
                                 dbc.Input(
                                     type="number",
@@ -1230,11 +1360,11 @@ subtab_2_2 = dbc.Card(
     dbc.CardBody(
         dbc.Container(
             [
-                dbc.Row(dbc.Col(html.H4(html.Span(id = "prediccion-text14")))),
+                dbc.Row(dbc.Col(html.H4(html.Span(id="prediccion-text14")))),
                 dbc.Row(className="mb-2", id="sleuth-row-orig"),
-                dbc.Row(dbc.Col(html.H4(html.Span(id = "prediccion-text15")))),
+                dbc.Row(dbc.Col(html.H4(html.Span(id="prediccion-text15")))),
                 dbc.Row(className="mb-2", id="sleuth-row-accel"),
-                dbc.Row(dbc.Col(html.H4(html.Span(id = "prediccion-text16")))),
+                dbc.Row(dbc.Col(html.H4(html.Span(id="prediccion-text16")))),
                 dbc.Row(className="mb-2", id="sleuth-row-deccel"),
                 dbc.Row(dbc.Col(html.Hr())),
                 dbc.Row(
@@ -1253,15 +1383,17 @@ subtab_2_2 = dbc.Card(
 subtab_2_3 = dbc.Card(
     dbc.CardBody(
         [
-            html.H3(html.Span(id = "prediccion-text17")),
+            html.H3(html.Span(id="prediccion-text17")),
             html.Div(
                 [
-                    html.H4(html.Span(id = "prediccion-text18")),
+                    html.H4(html.Span(id="prediccion-text18")),
                     html.Ul(
                         [
                             html.Li(
                                 [
-                                    html.Span(html.B(html.Span(id = "prediccion-text19"))),
+                                    html.Span(
+                                        html.B(html.Span(id="prediccion-text19"))
+                                    ),
                                     html.Span(
                                         id={
                                             "type": "result-prediction",
@@ -1272,7 +1404,9 @@ subtab_2_3 = dbc.Card(
                             ),
                             html.Li(
                                 [
-                                    html.Span(html.B(html.Span(id = "prediccion-text20"))),
+                                    html.Span(
+                                        html.B(html.Span(id="prediccion-text20"))
+                                    ),
                                     html.Span(
                                         id={
                                             "type": "result-prediction",
@@ -1283,7 +1417,9 @@ subtab_2_3 = dbc.Card(
                             ),
                             html.Li(
                                 [
-                                    html.Span(html.B(html.Span(id = "prediccion-text21"))),
+                                    html.Span(
+                                        html.B(html.Span(id="prediccion-text21"))
+                                    ),
                                     html.Span(
                                         id={
                                             "type": "result-prediction",
@@ -1294,7 +1430,9 @@ subtab_2_3 = dbc.Card(
                             ),
                             html.Li(
                                 [
-                                    html.Span(html.B(html.Span(id = "prediccion-text22"))),
+                                    html.Span(
+                                        html.B(html.Span(id="prediccion-text22"))
+                                    ),
                                     html.Span(
                                         id={
                                             "type": "result-prediction",
@@ -1305,7 +1443,9 @@ subtab_2_3 = dbc.Card(
                             ),
                             html.Li(
                                 [
-                                    html.Span(html.B(html.Span(id = "prediccion-text23"))),
+                                    html.Span(
+                                        html.B(html.Span(id="prediccion-text23"))
+                                    ),
                                     html.Span(
                                         id={
                                             "type": "result-prediction",
@@ -1320,50 +1460,62 @@ subtab_2_3 = dbc.Card(
             ),
             html.Div(
                 [
-                    html.H4(html.Span(id = "prediccion-text24")),
-                    html.Span(id = "prediccion-text25"),
+                    html.H4(html.Span(id="prediccion-text24")),
+                    html.Span(id="prediccion-text25"),
                     html.Div(id="div-result-prediction-coefficients"),
                 ]
             ),
             html.Div(
                 [
-                    html.H4(html.Span(id = "prediccion-text26")),
+                    html.H4(html.Span(id="prediccion-text26")),
                     html.Ul(
-    [
-        html.Li(
-            [
-                html.Span(html.B(id = "Pendiente-faltante2")),
-                html.Span(
-                    id={"type": "result-custom-raster", "field": "slope"}
-                ),
-            ]
-        ),
-        html.Li(
-            [
-                html.Span(html.B(id = "Caminos-faltante2")),
-                html.Span(
-                    id={"type": "result-custom-raster", "field": "roads"}
-                ),
-            ]
-        ),
-        html.Li(
-            [
-                html.Span(html.B(id = "Exclusion-faltante2")),
-                html.Span(
-                    id={"type": "result-custom-raster", "field": "excluded"}
-                ),
-            ]
-        ),
-        html.Li(
-            [
-                html.Span(html.B(id = "Urbano-faltante2")),
-                html.Span(
-                    id={"type": "result-custom-raster", "field": "urban"}
-                ),
-            ]
-        )
-    ]
-        ),
+                        [
+                            html.Li(
+                                [
+                                    html.Span(html.B(id="Pendiente-faltante2")),
+                                    html.Span(
+                                        id={
+                                            "type": "result-custom-raster",
+                                            "field": "slope",
+                                        }
+                                    ),
+                                ]
+                            ),
+                            html.Li(
+                                [
+                                    html.Span(html.B(id="Caminos-faltante2")),
+                                    html.Span(
+                                        id={
+                                            "type": "result-custom-raster",
+                                            "field": "roads",
+                                        }
+                                    ),
+                                ]
+                            ),
+                            html.Li(
+                                [
+                                    html.Span(html.B(id="Exclusion-faltante2")),
+                                    html.Span(
+                                        id={
+                                            "type": "result-custom-raster",
+                                            "field": "excluded",
+                                        }
+                                    ),
+                                ]
+                            ),
+                            html.Li(
+                                [
+                                    html.Span(html.B(id="Urbano-faltante2")),
+                                    html.Span(
+                                        id={
+                                            "type": "result-custom-raster",
+                                            "field": "urban",
+                                        }
+                                    ),
+                                ]
+                            ),
+                        ]
+                    ),
                 ]
             ),
             html.Div(
@@ -1380,9 +1532,9 @@ tab2_content = dbc.Card(
     dbc.CardBody(
         dbc.Tabs(
             [
-                dbc.Tab(subtab_2_1, label="Parámetros", id = "parametros-prediccion"),
-                dbc.Tab(subtab_2_2, label="Escenarios", id = "escenarios-prediccion"),
-                dbc.Tab(subtab_2_3, label="Iniciar", id = "iniciar-prediccion"),
+                dbc.Tab(subtab_2_1, label="Parámetros", id="parametros-prediccion"),
+                dbc.Tab(subtab_2_2, label="Escenarios", id="escenarios-prediccion"),
+                dbc.Tab(subtab_2_3, label="Iniciar", id="iniciar-prediccion"),
                 dbc.Tab(
                     subtab_2_4,
                     label="Resultados",
@@ -1401,9 +1553,9 @@ tab2_content = dbc.Card(
 tabs = dbc.Tabs(
     [
         dbc.Tab(label="Resumen", id="sleuth-tab-3"),
-        dbc.Tab(tab0_content, label="Rasters", id = "Rasters-principal"),
-        dbc.Tab(tab1_content, label="Calibración", id = "Calibracion-principal"),
-        dbc.Tab(tab2_content, label="Predicción", id = "Prediccion-principal"),
+        dbc.Tab(tab0_content, label="Rasters", id="Rasters-principal"),
+        dbc.Tab(tab1_content, label="Calibración", id="Calibracion-principal"),
+        dbc.Tab(tab2_content, label="Predicción", id="Prediccion-principal"),
     ]
 )
 
@@ -1427,7 +1579,7 @@ stores_rasters = []
 for field in RASTER_FIELDS:
     stores_attrs.append(dcc.Store(id={"type": "memory-attrs", "field": field}))
     stores_rasters.append(dcc.Store(id={"type": "memory-raster", "field": field}))
-    
+
 
 all_stores = (
     stores_coefficients
@@ -1467,53 +1619,73 @@ layout = html.Div(
 )
 """
 
+
 @callback(
-    [Output(key, 'children') for key in translations.keys()],
-    [Input('current-language-store', 'data')]
+    [Output(key, "children") for key in translations.keys()],
+    [Input("current-language-store", "data")],
 )
 def update_translated_content(language_data):
-    language = language_data['language'] if language_data else 'es'
+    language = language_data["language"] if language_data else "es"
     updated_content = [translations[key][language] for key in translations.keys()]
     return updated_content
 
+
 @callback(
     [Output(key, "title") for key in translations2.keys()],
-    [Input('btn-lang-es', 'n_clicks'),
-     Input('btn-lang-en', 'n_clicks'),
-     Input('btn-lang-pt', 'n_clicks')]
+    [
+        Input("btn-lang-es", "n_clicks"),
+        Input("btn-lang-en", "n_clicks"),
+        Input("btn-lang-pt", "n_clicks"),
+    ],
 )
 def update_translated_content2(btn_lang_es, btn_lang_en, btn_lang_pt):
     ctx = dash.callback_context
 
     if not ctx.triggered:
-        language = 'es'  # Predeterminado
+        language = "es"  # Predeterminado
     else:
-        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-        language = 'es' if button_id == 'btn-lang-es' else 'en' if button_id == 'btn-lang-en' else 'pt'
+        button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+        language = (
+            "es"
+            if button_id == "btn-lang-es"
+            else "en"
+            if button_id == "btn-lang-en"
+            else "pt"
+        )
 
     return [translations2[key][language] for key in translations2.keys()]
 
+
 # ---
 
-@callback(
-    [Output(key, 'label') for key in tab_translations.keys()], 
-    [Input('btn-lang-es', 'n_clicks'),
-     Input('btn-lang-en', 'n_clicks'),
-     Input('btn-lang-pt', 'n_clicks')]
-)
 
+@callback(
+    [Output(key, "label") for key in tab_translations.keys()],
+    [
+        Input("btn-lang-es", "n_clicks"),
+        Input("btn-lang-en", "n_clicks"),
+        Input("btn-lang-pt", "n_clicks"),
+    ],
+)
 def update_tab_labels(btn_lang_es, btn_lang_en, btn_lang_pt):
     ctx = dash.callback_context
 
     if not ctx.triggered:
-        language = 'es'  # Idioma predeterminado
+        language = "es"  # Idioma predeterminado
     else:
-        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-        language = 'es' if button_id == 'btn-lang-es' else 'en' if button_id == 'btn-lang-en' else 'pt'
+        button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+        language = (
+            "es"
+            if button_id == "btn-lang-es"
+            else "en"
+            if button_id == "btn-lang-en"
+            else "pt"
+        )
 
     tab_labels = [tab_translations[key][language] for key in tab_translations.keys()]
 
-    return tab_labels  
+    return tab_labels
+
 
 # ---
 
@@ -1525,7 +1697,7 @@ def update_tab_labels(btn_lang_es, btn_lang_en, btn_lang_pt):
     Output({"type": "val-calibration", "field": "stop-year"}, "options"),
     Input({"type": "val-calibration", "field": "start-year"}, "value"),
     State("memory-years", "data"),
-    prevent_initial_call=True
+    prevent_initial_call=True,
 )
 def update_year_range(start_year, years):
     start_year = int(start_year)
@@ -1694,7 +1866,7 @@ def restore_raster(n_clicks, id_hash):
     id_hash = str(id_hash)
     triggered_field = dash.callback_context.triggered_id["field"]
     arr = np.load(PATH_CACHE / id_hash / f"{triggered_field}.npy")
-    
+
     with open(PATH_CACHE / id_hash / "attributes.json", "r") as f:
         attrs = json.load(f)
 
@@ -1872,7 +2044,11 @@ def update_custom_raster_results(current, id_hash):
     triggered_field = dash.callback_context.triggered_id["field"]
     original = np.load(PATH_CACHE / id_hash / f"{triggered_field}.npy")
 
-    return ("No", "No") if np.array_equal(current, original, equal_nan=True) else ("Sí", "Sí")
+    return (
+        ("No", "No")
+        if np.array_equal(current, original, equal_nan=True)
+        else ("Sí", "Sí")
+    )
 
 
 # Actualizar resumen de coeficientes
@@ -2149,7 +2325,7 @@ def download_predicted_rasters(n_clicks, data, id_hash):
 
     with open(PATH_CACHE / id_hash / "attributes.json", "r") as f:
         attrs = json.load(f)
-    
+
     if n_clicks[triggered_idx] is None:
         return dash.no_update
 
@@ -2172,16 +2348,24 @@ def download_predicted_rasters(n_clicks, data, id_hash):
     State({"type": "memory-orig-coefficient", "field": dash.ALL}, "data"),
     prevent_initial_call=True,
 )
-def add_parameter_row(n_clicks, children, orig_coefficients, btn_lang_es, btn_lang_en, btn_lang_pt):
+def add_parameter_row(
+    n_clicks, children, orig_coefficients, btn_lang_es, btn_lang_en, btn_lang_pt
+):
     if n_clicks is None:
         return dash.no_update
-    
+
     ctx = dash.callback_context
     if not ctx.triggered:
-        language = 'es'  # Idioma predeterminado
+        language = "es"  # Idioma predeterminado
     else:
-        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-        language = 'es' if button_id == 'btn-lang-es' else 'en' if button_id == 'btn-lang-en' else 'pt'
+        button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+        language = (
+            "es"
+            if button_id == "btn-lang-es"
+            else "en"
+            if button_id == "btn-lang-en"
+            else "pt"
+        )
 
     coefficients = {}
     for state, value in zip(dash.callback_context.states_list[1], orig_coefficients):
@@ -2264,7 +2448,9 @@ def update_selects(years):
 def update_coefficient_stores(id_hash):
     id_hash = str(id_hash)
 
-    with open("./data/output/cities/coefficients_by_hash.json", "r", encoding="utf8") as f:
+    with open(
+        "./data/output/cities/coefficients_by_hash.json", "r", encoding="utf8"
+    ) as f:
         coefficients = json.load(f)
 
     found_coefficients = {}
@@ -2301,21 +2487,25 @@ def update_coefficient_stores(id_hash):
     ],
     Input("global-store-hash", "data"),
     Input("global-store-bbox-latlon", "data"),
-    Input('btn-lang-es', 'n_clicks'),
-    Input('btn-lang-en', 'n_clicks'),
-    Input('btn-lang-pt', 'n_clicks')
+    Input("btn-lang-es", "n_clicks"),
+    Input("btn-lang-en", "n_clicks"),
+    Input("btn-lang-pt", "n_clicks"),
 )
-
 def download_data(id_hash, bbox_latlon, btn_lang_es, btn_lang_en, btn_lang_pt):
-    
     ctx = dash.callback_context
-    
+
     if not ctx.triggered:
-        language = 'es'  # Idioma predeterminado
+        language = "es"  # Idioma predeterminado
     else:
-        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-        language = 'es' if button_id == 'btn-lang-es' else 'en' if button_id == 'btn-lang-en' else 'pt'
-        
+        button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+        language = (
+            "es"
+            if button_id == "btn-lang-es"
+            else "en"
+            if button_id == "btn-lang-en"
+            else "pt"
+        )
+
     id_hash = str(id_hash)
     path_cache = PATH_CACHE / id_hash
 

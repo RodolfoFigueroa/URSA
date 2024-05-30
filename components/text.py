@@ -37,6 +37,7 @@ def figureWithDescription(fig, text, title="Default title (change me)"):
         style=BLOCK_STYLE,
     )
 
+
 def figureWithDescription_translation(fig, text_id, title_id):
     info_id = f"{title_id}-info"
     tooltip = dbc.Tooltip(id=text_id, target=info_id, placement="top")
@@ -58,13 +59,19 @@ def figureWithDescription_translation(fig, text_id, title_id):
         style=BLOCK_STYLE,
     )
 
+
 def figureWithDescription_translation2(fig, text_ids, title_id):
     info_id = f"{title_id}-info"
-    
-    text_elements = [html.Span(id=text_id) if text_id != "GHSL" else html.Acronym("GHSL", title="Global Human Settlement Layer") for text_id in text_ids]
+
+    text_elements = [
+        html.Span(id=text_id)
+        if text_id != "GHSL"
+        else html.Acronym("GHSL", title="Global Human Settlement Layer")
+        for text_id in text_ids
+    ]
 
     tooltip = dbc.Tooltip(text_elements, target=info_id, placement="top")
-    
+
     info_button = html.I(id=info_id, className="bi bi-info-circle text-info")
     title_element = html.H4(id=title_id)
 

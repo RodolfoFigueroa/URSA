@@ -23,9 +23,11 @@ with open("./data/output/cities/cities_by_country.json", "r", encoding="utf8") a
     cities_by_country = json.load(f)
 
 # Traducciones
-with open('./data/translations/home/translations_home.json', 'r', encoding='utf-8') as file:
+with open(
+    "./data/translations/home/translations_home.json", "r", encoding="utf-8"
+) as file:
     translations = json.load(file)
-    
+
 DROPDOWN_STYLE = {
     "color": "gray",
     "width": "67%",
@@ -73,17 +75,13 @@ layout = html.Div(
             color="danger",
             dismissable=True,
         ),
-        #language_buttons,
+        # language_buttons,
         html.H1(id="text1"),
         html.Div(
             [
-                html.P(
-                    id="text2"
-                ),
+                html.P(id="text2"),
                 html.P(id="text3"),
-                html.P(
-                    id="text4"
-                ),
+                html.P(id="text4"),
             ]
         ),
         html.Div(
@@ -149,7 +147,7 @@ layout = html.Div(
                                             dbc.Card(
                                                 dbc.CardBody(
                                                     html.P(
-                                                            id="text5",
+                                                        id="text5",
                                                         style={"text-align": "start"},
                                                     )
                                                 ),
@@ -158,15 +156,13 @@ layout = html.Div(
                                             dbc.Card(
                                                 dbc.CardBody(
                                                     html.P(
-                                                            id="text6",
+                                                        id="text6",
                                                         style={"text-align": "start"},
                                                     )
                                                 ),
                                                 class_name="supp-info",
                                             ),
-                                            dbc.Button(
-                                                id="global-btn-apply-region"
-                                            ),
+                                            dbc.Button(id="global-btn-apply-region"),
                                         ],
                                         style={"text-align": "center"},
                                     ),
@@ -182,14 +178,16 @@ layout = html.Div(
     ]
 )
 
+
 @callback(
-    [Output(key, 'children') for key in translations.keys()],
-    [Input('current-language-store', 'data')]
+    [Output(key, "children") for key in translations.keys()],
+    [Input("current-language-store", "data")],
 )
 def update_translated_content(language_data):
-    language = language_data['language'] if language_data else 'es'
+    language = language_data["language"] if language_data else "es"
     updated_content = [translations[key][language] for key in translations.keys()]
     return updated_content
+
 
 @callback(
     Output("dropdown-city", "options"),

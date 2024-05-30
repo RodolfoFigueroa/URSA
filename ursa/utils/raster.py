@@ -119,7 +119,7 @@ def get_bboxes(city, country, data_path, buff=10, square=False):
         centroid = bbox.centroid
         minx, miny, maxx, maxy = bbox.bounds
         delta = max((maxx - minx), (maxy - miny))
-        bbox = centroid.buffer(delta/2, cap_style=3)
+        bbox = centroid.buffer(delta / 2, cap_style=3)
 
     return (
         bbox,

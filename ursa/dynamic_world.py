@@ -36,12 +36,12 @@ colors = {
 columns = list(class_dict.values())
 
 
-def plot_map_season(bbox_latlon, fua_latlon_centroid, season, year, language='es'):
+def plot_map_season(bbox_latlon, fua_latlon_centroid, season, year, language="es"):
     """Plots Dynamic World temporal composite on map for year and season.
 
     Season can one of the four seasons or 'all' for a yearly aggregate.
     """
-    
+
     category_translations = {
         "es": {
             "Agua": "Agua",
@@ -75,10 +75,12 @@ def plot_map_season(bbox_latlon, fua_latlon_centroid, season, year, language='es
             "Urbanización": "Urbanização",
             "Descubierto": "Descoberto",
             "Nieve y hielo": "Neve e Gelo",
-        }
+        },
     }
-    
-    translated_colors = {category_translations[language][key]: value for key, value in colors.items()}
+
+    translated_colors = {
+        category_translations[language][key]: value for key, value in colors.items()
+    }
 
     assert season in ["Q1", "Q2", "Q3", "Q4", "Qall"]
     assert 2016 <= year <= 2023
@@ -316,21 +318,16 @@ def load_or_get_lc_df(bbox_latlon, path_cache, force=False):
     return df
 
 
-def plot_lc_year(bbox_latlon, path_cache, year=2022, language='es'):
-
+def plot_lc_year(bbox_latlon, path_cache, year=2022, language="es"):
     translations = {
-        "x_axis_title": {
-            "es": "Área (km²)",
-            "en": "Area (km²)",
-            "pt": "Área (km²)"
-        },
+        "x_axis_title": {"es": "Área (km²)", "en": "Area (km²)", "pt": "Área (km²)"},
         "y_axis_title": {
             "es": "Tipo de cobertura",
             "en": "Type of Coverage",
-            "pt": "Tipo de Cobertura"
-        }
+            "pt": "Tipo de Cobertura",
+        },
     }
-    
+
     category_translations = {
         "es": {
             "Agua": "Agua",
@@ -364,7 +361,7 @@ def plot_lc_year(bbox_latlon, path_cache, year=2022, language='es'):
             "Urbanización": "Urbanização",
             "Descubierto": "Descoberto",
             "Nieve y hielo": "Neve e Gelo",
-        }
+        },
     }
 
     x_col = translations["x_axis_title"][language]
@@ -381,7 +378,7 @@ def plot_lc_year(bbox_latlon, path_cache, year=2022, language='es'):
     )
 
     lc_present[x_col] = round(lc_present[x_col]).astype(int)
-    
+
     #
     lc_present[y_col] = lc_present[y_col].map(category_translations[language])
 
@@ -400,8 +397,7 @@ def plot_lc_year(bbox_latlon, path_cache, year=2022, language='es'):
     return fig
 
 
-def plot_lc_time_series(bbox_latlon, path_cache, language = 'es'):
-    
+def plot_lc_time_series(bbox_latlon, path_cache, language="es"):
     category_translations = {
         "es": {
             "Agua": "Agua",
@@ -435,25 +431,17 @@ def plot_lc_time_series(bbox_latlon, path_cache, language = 'es'):
             "Urbanización": "Urbanização",
             "Descubierto": "Descoberto",
             "Nieve y hielo": "Neve e Gelo",
-        }
+        },
     }
-    
+
     translations = {
-        "y_axis_title": {
-            "es": "Área (km²)",
-            "en": "Area (km²)",
-            "pt": "Área (km²)"
-        },
-        "x_axis_title": {
-            "es": "Año",
-            "en": "Year",
-            "pt": "Ano"
-        },
+        "y_axis_title": {"es": "Área (km²)", "en": "Area (km²)", "pt": "Área (km²)"},
+        "x_axis_title": {"es": "Año", "en": "Year", "pt": "Ano"},
         "legend_title": {
             "es": "Tipo de cobertura",
             "en": "Type of Coverage",
-            "pt": "Tipo de Cobertura"
-        }
+            "pt": "Tipo de Cobertura",
+        },
     }
 
     lc_df = load_or_get_lc_df(bbox_latlon, path_cache)
@@ -481,4 +469,3 @@ def plot_lc_time_series(bbox_latlon, path_cache, language = 'es'):
     fig.for_each_trace(lambda t: t.update(name=names[t.name]))
 
     return fig
-

@@ -291,7 +291,9 @@ def plot_built_poly(built_gdf, bbox_latlon, year=2020):
     return Map
 
 
-def plot_built_agg_img(smod, built, bbox_mollweide, centroid_mollweide, thresh=0.2, language="es"):
+def plot_built_agg_img(
+    smod, built, bbox_mollweide, centroid_mollweide, thresh=0.2, language="es"
+):
     """Plots historic built using an image overlay."""
 
     translations = {
@@ -312,9 +314,9 @@ def plot_built_agg_img(smod, built, bbox_mollweide, centroid_mollweide, thresh=0
             "Peripheral Zones": "Zonas periféricas",
             "Central Zone": "Zona central",
             "Analysis Zone": "Zona de análise",
-        }
+        },
     }
-    
+
     years = [
         "1975",
         "1980",
@@ -356,7 +358,7 @@ def plot_built_agg_img(smod, built, bbox_mollweide, centroid_mollweide, thresh=0
     built_img = np.zeros((*built_bin_agg.shape, 4), dtype="uint8")
 
     # Set colormap
-    colors_rgba = [plt.cm.get_cmap("cividis", 10)(i) for i in range(10)]
+    colors_rgba = [plt.get_cmap("cividis", 10)(i) for i in range(10)]
     colors = (np.array(colors_rgba) * 255).astype("uint8")
     cmap = {y: c for y, c in zip(years_uint8, colors)}
     cmap_cat = {y: mpl.colors.rgb2hex(c) for y, c in zip(years, colors_rgba)}
@@ -620,14 +622,13 @@ def get_urb_growth_df(smod, built, pop, centroid_mollweide, path_cache):
     return df
 
 
-def plot_smod_clusters(smod, bbox_latlon, feature="clusters", language='es'):
-    
+def plot_smod_clusters(smod, bbox_latlon, feature="clusters", language="es"):
     translations = {
         "es": {"Year": "Año"},
         "en": {"Year": "Year"},
-        "pt": {"Year": "Ano"}
+        "pt": {"Year": "Ano"},
     }
-    
+
     if feature == "clusters":
         c_code = 2
     elif feature == "centers":
@@ -651,7 +652,9 @@ def plot_smod_clusters(smod, bbox_latlon, feature="clusters", language='es'):
 
     gdf = gpd.GeoDataFrame(df.drop(columns=["x", "y"]), crs=smod.rio.crs)
 
-    gdf[translations[language]["Year"]] = gdf[translations[language]["Year"]].astype(str)
+    gdf[translations[language]["Year"]] = gdf[translations[language]["Year"]].astype(
+        str
+    )
 
     # Set colormap
     years = [
@@ -666,7 +669,7 @@ def plot_smod_clusters(smod, bbox_latlon, feature="clusters", language='es'):
         "2015",
         "2020",
     ]
-    colors_rgba = [plt.cm.get_cmap("cividis", 10)(i) for i in range(10)]
+    colors_rgba = [plt.get_cmap("cividis", 10)(i) for i in range(10)]
     cmap_cat = {y: mpl.colors.rgb2hex(c) for y, c in zip(years, colors_rgba)}
 
     gdf = gdf.to_crs(epsg=4326).reset_index()
@@ -711,7 +714,13 @@ def plot_smod_clusters(smod, bbox_latlon, feature="clusters", language='es'):
 
 
 def plot_built_year_img(
-    smod, built, bbox_latlon, bbox_mollweide, centroid_mollweide, year=2020, language = "es"
+    smod,
+    built,
+    bbox_latlon,
+    bbox_mollweide,
+    centroid_mollweide,
+    year=2020,
+    language="es",
 ):
     """Plots built for year using an image overlay."""
 
@@ -722,7 +731,7 @@ def plot_built_year_img(
             "Of Construction": "de construcción",
             "Peripheral Zones": "Zonas periféricas",
             "Central Zone": "Zona central",
-            "Analysis Zone": "Zona de análisis"
+            "Analysis Zone": "Zona de análisis",
         },
         "en": {
             "Year": "Year",
@@ -730,7 +739,7 @@ def plot_built_year_img(
             "Of Construction": "of construction",
             "Peripheral Zones": "Peripheral Zones",
             "Central Zone": "Central Zone",
-            "Analysis Zone": "Analysis Zone"
+            "Analysis Zone": "Analysis Zone",
         },
         "pt": {
             "Year": "Ano",
@@ -738,8 +747,8 @@ def plot_built_year_img(
             "Of Construction": "de construção",
             "Peripheral Zones": "Zonas periféricas",
             "Central Zone": "Zona central",
-            "Analysis Zone": "Zona de análise"
-        }
+            "Analysis Zone": "Zona de análise",
+        },
     }
 
     resolution = built.rio.resolution()
@@ -848,7 +857,6 @@ def plot_built_year_img(
     p_fig.update_traces(hovertemplate=None, hoverinfo="skip")
     fig.add_traces(p_fig.data)
 
-
     # High res image
     if HIGH_RES:
         img = img.resize(
@@ -880,29 +888,30 @@ def plot_built_year_img(
     return fig
 
 
-def plot_pop_year_img(smod, pop, bbox_mollweide, centroid_mollweide, year=2020, language = "es"):
-    
+def plot_pop_year_img(
+    smod, pop, bbox_mollweide, centroid_mollweide, year=2020, language="es"
+):
     translations = {
-    "es": {
-        "Population": "Población",
-        "Central Zone": "Zona central",
-        "Peripheral Zones": "Zonas periféricas",
-        "Analysis Zone": "Zona de análisis"
-    },
-    "en": {
-        "Population": "Population",
-        "Central Zone": "Central Zone",
-        "Peripheral Zones": "Peripheral Zones",
-        "Analysis Zone": "Analysis Zone"
-    },
-    "pt": {
-        "Population": "População",
-        "Central Zone": "Zona central",
-        "Peripheral Zones": "Zonas periféricas",
-        "Analysis Zone": "Zona de análise"
+        "es": {
+            "Population": "Población",
+            "Central Zone": "Zona central",
+            "Peripheral Zones": "Zonas periféricas",
+            "Analysis Zone": "Zona de análisis",
+        },
+        "en": {
+            "Population": "Population",
+            "Central Zone": "Central Zone",
+            "Peripheral Zones": "Peripheral Zones",
+            "Analysis Zone": "Analysis Zone",
+        },
+        "pt": {
+            "Population": "População",
+            "Central Zone": "Zona central",
+            "Peripheral Zones": "Zonas periféricas",
+            "Analysis Zone": "Zona de análise",
+        },
     }
-}
-    
+
     resolution = pop.rio.resolution()
     pixel_area = abs(np.prod(resolution)) / 1e6
 
@@ -958,7 +967,11 @@ def plot_pop_year_img(smod, pop, bbox_mollweide, centroid_mollweide, year=2020, 
     cmap_d = {v: c for v, c in zip(mid_vals, colors_d)}
 
     dummy_df = pd.DataFrame(
-    {"lat": [0] * n_classes, "lon": [0] * n_classes, translations[language]["Population"]: mid_vals}
+        {
+            "lat": [0] * n_classes,
+            "lon": [0] * n_classes,
+            translations[language]["Population"]: mid_vals,
+        }
     )
 
     fig = px.scatter_mapbox(
@@ -1065,7 +1078,9 @@ def plot_pop_year_img(smod, pop, bbox_mollweide, centroid_mollweide, year=2020, 
     return fig
 
 
-def plot_growth(growth_df, *, y_cols, title, ylabel, var_type="extensive", language = "es"):
+def plot_growth(
+    growth_df, *, y_cols, title, ylabel, var_type="extensive", language="es"
+):
     if var_type == "extensive":
         p_func = px.area
     elif var_type == "intensive":
@@ -1073,12 +1088,8 @@ def plot_growth(growth_df, *, y_cols, title, ylabel, var_type="extensive", langu
 
     fig = p_func(growth_df, x="year", y=y_cols, markers=True)
 
-    translations_year = {
-        "es": "Año",
-        "en": "Year",
-        "pt": "Ano"
-    }
-    
+    translations_year = {"es": "Año", "en": "Year", "pt": "Ano"}
+
     fig.update_layout(
         yaxis_title=ylabel,
         yaxis_tickformat=",.3~f",
@@ -1098,7 +1109,7 @@ def plot_growth(growth_df, *, y_cols, title, ylabel, var_type="extensive", langu
         "main": "Zona central {} {:.2f}%",
         "other": "Zonas periféricas  {} {:.2f}%",
     }
-    
+
     name_dict_translations = {
         "es": {
             "all": "Todas las zonas {} {:.2f}%",
@@ -1114,11 +1125,11 @@ def plot_growth(growth_df, *, y_cols, title, ylabel, var_type="extensive", langu
             "all": "Todas as zonas {} {:.2f}%",
             "main": "Zona central {} {:.2f}%",
             "other": "Zonas periféricas {} {:.2f}%",
-        }
+        },
     }
 
     name_dict = name_dict_translations[language]
-    
+
     color_dict = {"all": "black", "main": "maroon", "other": "orange"}
     options = ["all", "main", "other"]
 
