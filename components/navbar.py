@@ -1,8 +1,8 @@
 import dash_bootstrap_components as dbc
 import ursa.utils as utils
-import ursa.utils.image
 
 from dash import html
+from ursa.utils import image
 
 HOME_ICON_PATH = "./assets/Icon_map.png"
 LAND_COVER_ICON_PATH = "./assets/Icon_Cobertura.png"

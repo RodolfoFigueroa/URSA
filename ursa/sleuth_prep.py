@@ -9,12 +9,12 @@ import rioxarray as rxr
 import ursa.degree_of_urbanization as dou
 import ursa.ghsl as ghsl
 import ursa.utils as utils
-import ursa.utils.raster
 import xarray as xr
 
 from geocube.api.core import make_geocube
 from rasterio.enums import Resampling
 from scipy.spatial import KDTree
+from ursa.utils import raster
 
 
 def load_or_prep_rasters(bbox_mollweide, path_cache):

@@ -14,10 +14,7 @@ import rasterio as rio
 import rasterio.warp as warp
 import sleuth_sklearn.utils as utils
 import ursa.sleuth_prep as sp
-
 import ursa.utils as utils
-import ursa.utils.geometry
-
 import xarray as xr
 
 from dash import html, dcc, callback, Input, Output, State
@@ -28,6 +25,7 @@ from rasterio.crs import CRS
 from rasterio.enums import Resampling
 from shapely.geometry import shape
 from sleuth_sklearn.estimator import SLEUTH
+from ursa.utils import geometry
 
 # Traducciones
 with open(

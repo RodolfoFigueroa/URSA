@@ -2,8 +2,8 @@ import json
 
 import geopandas as gpd
 import ursa.utils as utils
-import ursa.utils.geometry
-import ursa.utils.raster
+
+from ursa.utils import geometry, raster
 
 
 def generate_hash_files(path_cache):

@@ -5,10 +5,9 @@ import geopandas as gpd
 import pandas as pd
 import plotly.express as px
 import ursa.utils as utils
-import ursa.utils.date
-import ursa.utils.raster
 
 from shapely.geometry import Polygon
+from ursa.utils import date, raster
 
 class_dict = {
     "0": "Agua",

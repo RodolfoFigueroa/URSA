@@ -5,12 +5,11 @@ import dash_bootstrap_components as dbc
 import dash_leaflet as dl
 import geopandas as gpd
 import ursa.utils as utils
-import ursa.utils.geometry
-import ursa.utils.raster
 
 from dash import callback, html, Input, Output, State
 from pathlib import Path
 from shapely.geometry import shape
+from ursa.utils import geometry, raster
 
 
 dash.register_page(__name__, path="/")

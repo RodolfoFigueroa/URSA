@@ -3,7 +3,6 @@ import dash
 import dash_bootstrap_components as dbc
 import ursa.ghsl as ghsl
 import ursa.utils as utils
-import ursa.utils.geometry
 
 from components.text import (
     figureWithDescription,
@@ -15,6 +14,7 @@ from components.page import new_page_layout
 from dash import html, dcc, callback, Input, Output
 from pathlib import Path
 from shapely.geometry import shape
+from ursa.utils import geometry
 from zipfile import ZipFile
 
 import json

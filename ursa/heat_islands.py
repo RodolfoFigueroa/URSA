@@ -7,14 +7,12 @@ import ursa.ghsl as ghsl
 import ursa.sleuth_prep as sp
 
 import ursa.utils as utils
-import ursa.utils.date
-import ursa.utils.geometry
-import ursa.utils.raster
 
 import ursa.world_cover as wc
 
 from typing import Tuple, List
 from ursa.constants import TEMP_CAT_MAP, TEMP_NAMES
+from ursa.utils import date, geometry, raster
 
 MAX_PIXELS = 1e10
 

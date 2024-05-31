@@ -1,6 +1,7 @@
 import dash
 import dateutil
 import ee
+import json
 
 import dash_bootstrap_components as dbc
 import pandas as pd
@@ -8,9 +9,6 @@ import ursa.heat_islands as ht
 import ursa.plots.heat_islands as pht
 
 import ursa.utils as utils
-import ursa.utils.date
-import ursa.utils.geometry
-import ursa.utils.raster
 
 import ursa.world_cover as wc
 
@@ -24,8 +22,8 @@ from datetime import datetime, timezone
 from layouts.common import generate_drive_text_translation
 from pathlib import Path
 from shapely.geometry import shape
+from ursa.utils import date, geometry, raster
 
-import json
 
 # Traducciones
 with open(
@@ -802,7 +800,7 @@ def update_mitigation_kilometers(values, id_hash, bbox_latlon, uc_latlon):
     except Exception:
         return [dash.no_update] * 6 + [True]
 
-    urban_mean_temp = ht.get_urban_mean(bbox_latlon, "Qall", 2022, path_cache)
+    urban_mean_temp = ht.get_urban_mean(bbox_latlon, SEASON, YEAR, path_cache)
 
     area_roofs = df.roofs.item()
     area_urban = df.urban.item()
@@ -864,7 +862,7 @@ def _download_handler(n_clicks, id_hash, bbox_latlon, task_name, download_type):
     path_cache = Path(f"./data/cache/{id_hash}")
 
     if task_name is None:
-        start_date, end_date = utils.date.date_format("Qall", 2022)
+        start_date, end_date = utils.date.date_format(SEASON, YEAR)
 
         bbox_latlon = shape(bbox_latlon)
         bbox_ee = utils.raster.bbox_to_ee(bbox_latlon)
@@ -1052,7 +1050,7 @@ def generate_maps(
         bbox_latlon, uc_latlon, start_date, end_date, path_cache
     )
 
-    radial_temp_plot = pht.plot_radial_temperature(df_f, language=language)  #
+    radial_temp_plot = pht.plot_radial_temperature(df_f, language=language)
     radial_lc_plot = pht.plot_radial_lc(df_lc, language=language)  #
 
     return temp_map, areas_plot, temps_by_lc_plot, radial_temp_plot, radial_lc_plot
