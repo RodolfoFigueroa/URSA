@@ -8,8 +8,8 @@ import osmnx as ox
 import rioxarray as rxr
 import ursa.degree_of_urbanization as dou
 import ursa.ghsl as ghsl
-import ursa.utils.geometry as ug
-import ursa.utils.raster as ru
+import ursa.utils as utils
+import ursa.utils.raster
 import xarray as xr
 
 from geocube.api.core import make_geocube
@@ -58,7 +58,7 @@ def prep_rasters(bbox_mollweide, path_cache):
     # to get data from GEE
 
     bbox_latlon = bbox_to_latlon(bbox_mollweide, "ESRI:54009")
-    bbox_ee = ru.bbox_to_ee(bbox_latlon)
+    bbox_ee = utils.raster.bbox_to_ee(bbox_latlon)
 
     # Historic urbanization, obtained from GHSL + DoU processing
     # Extract last 20 years or urbanization for 5 calibration points

@@ -1,4 +1,5 @@
 import os
+import tempfile
 
 import geemap.plotlymap as geemap
 import geopandas as gpd
@@ -9,8 +10,8 @@ import pandas as pd
 import plotly.express as px
 import rasterio as rio
 import rioxarray as rxr
-import tempfile
-import ursa.utils.raster as ru
+import ursa.utils as utils
+import ursa.utils.raster
 
 from PIL import Image, ImageOps
 from shapely.geometry import shape
@@ -74,7 +75,7 @@ def download_s3(
 
     array_list = []
     for year in year_list:
-        subset, profile = ru.np_from_bbox_s3(
+        subset, profile = utils.raster.np_from_bbox_s3(
             s3_path + fname.format(year), bbox, bucket, nodata_to_zero=True
         )
         array_list.append(subset)
@@ -254,7 +255,9 @@ def built_s_polygons(built):
     built_df = built_df[built_df.b_area > 0].reset_index(drop=True)
 
     built_df["fraction"] = built_df.b_area / pixel_area
-    built_df["geometry"] = built_df.apply(ru.row2cell, res_xy=resolution, axis=1)
+    built_df["geometry"] = built_df.apply(
+        utils.raster.row2cell, res_xy=resolution, axis=1
+    )
 
     built_gdf = gpd.GeoDataFrame(built_df, crs=built.rio.crs).drop(columns=["x", "y"])
 
@@ -648,7 +651,9 @@ def plot_smod_clusters(smod, bbox_latlon, feature="clusters", language="es"):
     df = df.rename(columns={"band": translations[language]["Year"]})
     df = df.sort_values(translations[language]["Year"]).reset_index(drop=True)
 
-    df["geometry"] = df.apply(ru.row2cell, res_xy=smod.rio.resolution(), axis=1)
+    df["geometry"] = df.apply(
+        utils.raster.row2cell, res_xy=smod.rio.resolution(), axis=1
+    )
 
     gdf = gpd.GeoDataFrame(df.drop(columns=["x", "y"]), crs=smod.rio.crs)
 
@@ -924,7 +929,7 @@ def plot_pop_year_img(
     pop = pop.rio.reproject(dst_crs=4326)
 
     # Get back counts
-    pop = pop * ru.get_area_grid(pop, "km")
+    pop = pop * utils.raster.get_area_grid(pop, "km")
 
     # Normalize values for colormap
     n_classes = 7

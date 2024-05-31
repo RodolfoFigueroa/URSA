@@ -1,8 +1,8 @@
 import dash_bootstrap_components as dbc
+import ursa.utils as utils
+import ursa.utils.image
 
 from dash import html
-from pathlib import Path
-from ursa.utils.image import b64_image
 
 HOME_ICON_PATH = "./assets/Icon_map.png"
 LAND_COVER_ICON_PATH = "./assets/Icon_Cobertura.png"
@@ -14,7 +14,7 @@ FUTURE_WORLD_ICON_PATH = "./assets/Icon_Escenarios.png"
 def navIcon(icon_path):
     return html.Img(
         alt=icon_path,
-        src=b64_image(icon_path),
+        src=utils.image.b64_image(icon_path),
         style={
             "height": "60px",
             "width": "auto",

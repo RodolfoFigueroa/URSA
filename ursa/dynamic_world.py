@@ -4,8 +4,9 @@ import geemap.plotlymap as geemap
 import geopandas as gpd
 import pandas as pd
 import plotly.express as px
-import ursa.utils.date as du
-import ursa.utils.raster as ru
+import ursa.utils as utils
+import ursa.utils.date
+import ursa.utils.raster
 
 from shapely.geometry import Polygon
 
@@ -101,9 +102,9 @@ def plot_map_season(bbox_latlon, fua_latlon_centroid, season, year, language="es
         ],
     }
 
-    bbox_ee = ru.bbox_to_ee(bbox_latlon)
+    bbox_ee = utils.raster.bbox_to_ee(bbox_latlon)
 
-    start_date, end_date = du.date_format(season, year)
+    start_date, end_date = utils.date.date_format(season, year)
 
     # Filter the Dynamic World NRT collection
     dw_col = ee.ImageCollection("GOOGLE/DYNAMICWORLD/V1")
@@ -211,9 +212,9 @@ def download_map_season(bbox_latlon, season, year):
             "#B39FE1",
         ],
     }
-    bbox_ee = ru.bbox_to_ee(bbox_latlon)
+    bbox_ee = utils.raster.bbox_to_ee(bbox_latlon)
 
-    start_date, end_date = du.date_format(season, year)
+    start_date, end_date = utils.date.date_format(season, year)
 
     # Filter the Dynamic World NRT collection
     dw_col = ee.ImageCollection("GOOGLE/DYNAMICWORLD/V1")
@@ -273,7 +274,7 @@ def download_map_season(bbox_latlon, season, year):
 def get_cover_df(bbox_latlon, path_cache):
     print("Downloading land cover time series from GEE ...")
 
-    bbox_ee = ru.bbox_to_ee(bbox_latlon)
+    bbox_ee = utils.raster.bbox_to_ee(bbox_latlon)
 
     dict_list = []
     for year in range(2016, 2023):

@@ -2,7 +2,8 @@ import dash
 
 import dash_bootstrap_components as dbc
 import ursa.ghsl as ghsl
-import ursa.utils.geometry as ug
+import ursa.utils as utils
+import ursa.utils.geometry
 
 from components.text import (
     figureWithDescription,
@@ -435,10 +436,12 @@ def generate_lines(
     path_cache = Path(f"./data/cache/{str(id_hash)}")
 
     bbox_latlon = shape(bbox_latlon)
-    bbox_mollweide = ug.reproject_geometry(bbox_latlon, "ESRI:54009").envelope
+    bbox_mollweide = utils.geometry.reproject_geometry(
+        bbox_latlon, "ESRI:54009"
+    ).envelope
 
     uc_latlon = shape(uc_latlon)
-    uc_mollweide = ug.reproject_geometry(uc_latlon, "ESRI:54009")
+    uc_mollweide = utils.geometry.reproject_geometry(uc_latlon, "ESRI:54009")
 
     centroid_mollweide = uc_mollweide.centroid
 

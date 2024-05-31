@@ -6,9 +6,12 @@ import dash_bootstrap_components as dbc
 import pandas as pd
 import ursa.heat_islands as ht
 import ursa.plots.heat_islands as pht
-import ursa.utils.date as du
-import ursa.utils.geometry as ug
-import ursa.utils.raster as ru
+
+import ursa.utils as utils
+import ursa.utils.date
+import ursa.utils.geometry
+import ursa.utils.raster
+
 import ursa.world_cover as wc
 
 from components.text import (
@@ -789,8 +792,8 @@ def update_mitigation_kilometers(values, id_hash, bbox_latlon, uc_latlon):
     bbox_latlon = shape(bbox_latlon)
     uc_latlon = shape(uc_latlon)
 
-    bbox_mollweide = ug.reproject_geometry(bbox_latlon, "ESRI:54009")
-    uc_mollweide = ug.reproject_geometry(uc_latlon, "ESRI:54009")
+    bbox_mollweide = utils.geometry.reproject_geometry(bbox_latlon, "ESRI:54009")
+    uc_mollweide = utils.geometry.reproject_geometry(uc_latlon, "ESRI:54009")
 
     try:
         df = ht.load_or_get_mit_areas_df(
@@ -861,10 +864,10 @@ def _download_handler(n_clicks, id_hash, bbox_latlon, task_name, download_type):
     path_cache = Path(f"./data/cache/{id_hash}")
 
     if task_name is None:
-        start_date, end_date = du.date_format("Qall", 2022)
+        start_date, end_date = utils.date.date_format("Qall", 2022)
 
         bbox_latlon = shape(bbox_latlon)
-        bbox_ee = ru.bbox_to_ee(bbox_latlon)
+        bbox_ee = utils.raster.bbox_to_ee(bbox_latlon)
 
         lst, proj = ht.get_lst(bbox_ee, start_date, end_date)
         _, masks = wc.get_cover_and_masks(bbox_ee, proj)
@@ -1022,7 +1025,7 @@ def generate_maps(
     bbox_latlon = shape(bbox_latlon)
     fua_latlon = shape(fua_latlon)
     uc_latlon = shape(uc_latlon)
-    bbox_ee = ru.bbox_to_ee(bbox_latlon)
+    bbox_ee = utils.raster.bbox_to_ee(bbox_latlon)
 
     start_date, end_date = ht.date_format(SEASON, YEAR)
 

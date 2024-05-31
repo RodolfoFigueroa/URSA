@@ -5,13 +5,16 @@ import geopandas as gpd
 import pandas as pd
 import ursa.ghsl as ghsl
 import ursa.sleuth_prep as sp
-import ursa.utils.geometry as ug
+
+import ursa.utils as utils
+import ursa.utils.date
+import ursa.utils.geometry
+import ursa.utils.raster
+
 import ursa.world_cover as wc
 
 from typing import Tuple, List
 from ursa.constants import TEMP_CAT_MAP, TEMP_NAMES
-from ursa.utils.date import date_format
-from ursa.utils.raster import bbox_to_ee
 
 MAX_PIXELS = 1e10
 
@@ -264,8 +267,8 @@ def load_or_get_land_usage_df(bbox_ee, img_cat, path_cache):
 
 def make_donuts(proj, bbox_latlon, uc_latlon, width=100):
     # Set projection
-    bbox_utm = ug.reproject_geometry(bbox_latlon, proj)
-    uc_utm = ug.reproject_geometry(uc_latlon, proj)
+    bbox_utm = utils.geometry.reproject_geometry(bbox_latlon, proj)
+    uc_utm = utils.geometry.reproject_geometry(uc_latlon, proj)
 
     # Set center of disks as the center of the
     # 2015 urban center
@@ -364,7 +367,7 @@ def load_or_get_radial_distributions(
         df_f = pd.read_csv(fpath_f)
         df_lc = pd.read_csv(fpath_lc, index_col="x")
     else:
-        bbox_ee = bbox_to_ee(bbox_latlon)
+        bbox_ee = utils.raster.bbox_to_ee(bbox_latlon)
 
         lst, proj = get_lst(bbox_ee, start_date, end_date)
         lc, masks = wc.get_cover_and_masks(bbox_ee, proj)
@@ -387,8 +390,8 @@ def load_or_get_radial_distributions(
 
 
 def get_urban_mean(bbox_latlon, season, year, path_cache):
-    bbox_ee = bbox_to_ee(bbox_latlon)
-    start_date, end_date = date_format(season, year)
+    bbox_ee = utils.raster.bbox_to_ee(bbox_latlon)
+    start_date, end_date = utils.date.date_format(season, year)
 
     lst, proj = get_lst(bbox_ee, start_date, end_date)
     _, masks = wc.get_cover_and_masks(bbox_ee, proj)
@@ -421,7 +424,7 @@ def get_mit_areas_df(bbox_latlon, bbox_mollweide, uc_mollweide_centroid, path_ca
 
     cluster_mollweide = main_cluster[main_cluster.year == 2020]
     cluster_latlon = cluster_mollweide.to_crs("EPSG:4326").geometry.iloc[0]
-    cluster_ee = bbox_to_ee(cluster_latlon)
+    cluster_ee = utils.raster.bbox_to_ee(cluster_latlon)
 
     roof_area = calculate_building_area(
         bbox_mollweide, path_cache, cluster_mollweide.geometry

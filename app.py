@@ -4,11 +4,12 @@ import subprocess
 import sys
 
 import dash_bootstrap_components as dbc
+import ursa.utils as utils
+import ursa.utils.image
 
 from components.navbar import navbar, create_navbar
 from dash import Dash, html, dcc
 from pathlib import Path
-from ursa.utils.image import b64_image
 from dash.dependencies import Input, Output, State
 
 
@@ -59,7 +60,7 @@ app.layout = dbc.Container(
                     html.A(
                         html.Img(
                             alt="Home",
-                            src=b64_image(BID_LOGO_PATH),
+                            src=utils.image.b64_image(BID_LOGO_PATH),
                             style={
                                 "height": "30px",
                                 "width": "auto",

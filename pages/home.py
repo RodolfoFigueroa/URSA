@@ -4,12 +4,13 @@ import json
 import dash_bootstrap_components as dbc
 import dash_leaflet as dl
 import geopandas as gpd
-import ursa.utils.raster as ru
+import ursa.utils as utils
+import ursa.utils.geometry
+import ursa.utils.raster
 
 from dash import callback, html, Input, Output, State
 from pathlib import Path
 from shapely.geometry import shape
-from ursa.utils.geometry import geometry_to_json, hash_geometry
 
 
 dash.register_page(__name__, path="/")
@@ -245,13 +246,15 @@ def set_city(n_clicks, country, city):
     if n_clicks is None or n_clicks == 0:
         return (dash.no_update,) * 7
 
-    bbox_latlon, uc_latlon, fua_latlon = ru.get_bboxes(city, country, PATH_FUA)
+    bbox_latlon, uc_latlon, fua_latlon = utils.raster.get_bboxes(
+        city, country, PATH_FUA
+    )
 
-    bbox_latlon_json = geometry_to_json(bbox_latlon)
-    uc_latlon_json = geometry_to_json(uc_latlon)
-    fua_latlon_json = geometry_to_json(fua_latlon)
+    bbox_latlon_json = utils.geometry.geometry_to_json(bbox_latlon)
+    uc_latlon_json = utils.geometry.geometry_to_json(uc_latlon)
+    fua_latlon_json = utils.geometry.geometry_to_json(fua_latlon)
 
-    id_hash = hash_geometry(bbox_latlon_json)
+    id_hash = utils.geometry.hash_geometry(bbox_latlon_json)
 
     path_cache = Path(f"./data/cache/{str(id_hash)}")
     path_cache.mkdir(exist_ok=True, parents=True)
@@ -290,7 +293,7 @@ def set_custom_bbox(n_clicks, geojson, bbox_orig):
 
     features = geojson["features"]
     if len(features) == 0:
-        id_hash = hash_geometry(bbox_orig)
+        id_hash = utils.geometry.hash_geometry(bbox_orig)
         path_cache = Path(f"./data/cache/{str(id_hash)}")
         path_cache.mkdir(exist_ok=True, parents=True)
         return (
@@ -314,7 +317,7 @@ def set_custom_bbox(n_clicks, geojson, bbox_orig):
             "danger",
         )
 
-    id_hash = hash_geometry(bbox_json)
+    id_hash = utils.geometry.hash_geometry(bbox_json)
     path_cache = Path(f"./data/cache/{str(id_hash)}")
     path_cache.mkdir(exist_ok=True, parents=True)
 

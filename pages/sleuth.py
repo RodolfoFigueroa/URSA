@@ -14,7 +14,10 @@ import rasterio as rio
 import rasterio.warp as warp
 import sleuth_sklearn.utils as utils
 import ursa.sleuth_prep as sp
-import ursa.utils.geometry as ug
+
+import ursa.utils as utils
+import ursa.utils.geometry
+
 import xarray as xr
 
 from dash import html, dcc, callback, Input, Output, State
@@ -2510,7 +2513,9 @@ def download_data(id_hash, bbox_latlon, btn_lang_es, btn_lang_en, btn_lang_pt):
     path_cache = PATH_CACHE / id_hash
 
     bbox_latlon = shape(bbox_latlon)
-    bbox_mollweide = ug.reproject_geometry(bbox_latlon, "ESRI:54009").envelope
+    bbox_mollweide = utils.geometry.reproject_geometry(
+        bbox_latlon, "ESRI:54009"
+    ).envelope
 
     sp.load_or_prep_rasters(bbox_mollweide, path_cache)
 
