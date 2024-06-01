@@ -1,11 +1,12 @@
 import dash
+import json
 
 import dash_bootstrap_components as dbc
 import ursa.ghsl as ghsl
+import ursa.plots as plots
 import ursa.utils as utils
 
 from components.text import (
-    figureWithDescription,
     figureWithDescription_translation,
     figureWithDescription_translation2,
 )
@@ -14,10 +15,11 @@ from components.page import new_page_layout
 from dash import html, dcc, callback, Input, Output
 from pathlib import Path
 from shapely.geometry import shape
-from ursa.utils import geometry
 from zipfile import ZipFile
 
-import json
+import ursa.plots.ghsl
+import ursa.utils.geometry
+
 
 # Traducciones
 with open(

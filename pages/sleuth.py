@@ -25,7 +25,8 @@ from rasterio.crs import CRS
 from rasterio.enums import Resampling
 from shapely.geometry import shape
 from sleuth_sklearn.estimator import SLEUTH
-from ursa.utils import geometry
+
+import ursa.utils.geometry
 
 # Traducciones
 with open(

@@ -9,7 +9,8 @@ import rioxarray as rxr
 import ursa.utils as utils
 
 from shapely.geometry import shape
-from ursa.utils import raster
+
+import ursa.utils.raster
 
 
 def download_s3(

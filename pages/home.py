@@ -9,8 +9,9 @@ import ursa.utils as utils
 from dash import callback, html, Input, Output, State
 from pathlib import Path
 from shapely.geometry import shape
-from ursa.utils import geometry, raster
 
+import ursa.utils.geometry
+import ursa.utils.raster
 
 dash.register_page(__name__, path="/")
 

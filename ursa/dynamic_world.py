@@ -7,7 +7,9 @@ import plotly.express as px
 import ursa.utils as utils
 
 from shapely.geometry import Polygon
-from ursa.utils import date, raster
+
+import ursa.utils.date
+import ursa.utils.raster
 
 class_dict = {
     "0": "Agua",

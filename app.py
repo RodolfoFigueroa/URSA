@@ -10,8 +10,8 @@ from components.navbar import navbar, create_navbar
 from dash import Dash, html, dcc
 from pathlib import Path
 from dash.dependencies import Input, Output, State
-from ursa.utils import image
 
+import ursa.utils.image
 
 BID_LOGO_PATH = "./assets/BID_blue.png"
 PATH_FUA = Path("./data/output/cities/")

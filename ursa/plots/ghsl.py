@@ -79,9 +79,8 @@ def _add_bbox_trace(fig, bbox_mollweide, translations, language):
 
 
 def _resize_image(img):
-    return img.resize(
-            [hw * 10 for hw in img.size], resample=Image.Resampling.NEAREST
-        )
+    return img.resize([hw * 10 for hw in img.size], resample=Image.Resampling.NEAREST)
+
 
 def plot_built_poly(built_gdf, bbox_latlon, year=2020):
     """Plots a map with built information for year with polygons.
