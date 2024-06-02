@@ -247,7 +247,7 @@ def plot_built_agg_img(
     return fig
 
 
-def _smod_to_frame(smod, feature, language):
+def _smod_to_frame(smod, feature="clusters", language="es"):
     if feature == "clusters":
         c_code = 2
     elif feature == "centers":
