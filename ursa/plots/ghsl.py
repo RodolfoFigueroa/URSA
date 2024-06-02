@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 import ursa.ghsl as ghsl
+import ursa.translations as ut
 import ursa.utils as utils
 
 from PIL import Image, ImageOps
@@ -34,7 +35,7 @@ YEARS = [
 YEARS_UINT8 = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], dtype="uint8")
 
 
-def _update_figure(fig, centroid_mollweide, smod, translations, language):
+def _update_figure(fig, centroid_mollweide, smod, language):
     smod_p = ghsl.smod_polygons(smod, centroid_mollweide)
     clusters_2020 = smod_p[(smod_p.year == 2020) & (smod_p["class"] == 2)]
     clusters_2020 = clusters_2020.to_crs(4326)
@@ -43,10 +44,10 @@ def _update_figure(fig, centroid_mollweide, smod, translations, language):
     n_other = 0
     for _, row in clusters_2020.iterrows():
         if row.is_main:
-            name = translations[language]["Central Zone"]
+            name = ut.central_zone[language]
             n_mains += 1
         else:
-            name = translations[language]["Peripheral Zones"]
+            name = ut.peripheral_zones[language]
             n_other += 1
 
         linestring = row.geometry.exterior
@@ -58,8 +59,8 @@ def _update_figure(fig, centroid_mollweide, smod, translations, language):
             lon="lons",
             color=[name] * len(x),
             color_discrete_map={
-                translations[language]["Central Zone"]: "maroon",
-                translations[language]["Peripheral Zones"]: "orange",
+                ut.central_zone[language]: "maroon",
+                ut.peripheral_zones[language]: "orange",
             },
         )
 
@@ -73,7 +74,7 @@ def _update_figure(fig, centroid_mollweide, smod, translations, language):
         fig.add_traces(p_fig.data)
 
 
-def _add_bbox_trace(fig, bbox_mollweide, translations, language):
+def _add_bbox_trace(fig, bbox_mollweide, language):
     bbox_temp = (
         gpd.GeoDataFrame({"geometry": bbox_mollweide}, index=[0], crs="ESRI:54009")
         .to_crs(4326)
@@ -85,8 +86,8 @@ def _add_bbox_trace(fig, bbox_mollweide, translations, language):
         p_df,
         lat="lats",
         lon="lons",
-        color=[translations[language]["Analysis Zone"]] * len(x),
-        color_discrete_map={translations[language]["Analysis Zone"]: "blue"},
+        color=[ut.analysis_zone[language]] * len(x),
+        color_discrete_map={ut.analysis_zone[language]: "blue"},
     )
     p_fig.update_traces(hovertemplate=None, hoverinfo="skip")
     fig.add_traces(p_fig.data)
@@ -193,28 +194,6 @@ def plot_built_agg_img(
     smod, built, bbox_mollweide, centroid_mollweide, thresh=0.2, language="es"
 ):
     """Plots historic built using an image overlay."""
-
-    translations = {
-        "es": {
-            "Year": "Año",
-            "Peripheral Zones": "Zonas periféricas",
-            "Central Zone": "Zona central",
-            "Analysis Zone": "Zona de análisis",
-        },
-        "en": {
-            "Year": "Year",
-            "Peripheral Zones": "Peripheral Zones",
-            "Central Zone": "Central Zone",
-            "Analysis Zone": "Analysis Zone",
-        },
-        "pt": {
-            "Year": "Ano",
-            "Peripheral Zones": "Zonas periféricas",
-            "Central Zone": "Zona central",
-            "Analysis Zone": "Zona de análise",
-        },
-    }
-
     img, cmap_cat, coordinates = _raster_to_image(built, thresh)
 
     lon = coordinates[:, 0]
@@ -233,7 +212,7 @@ def plot_built_agg_img(
     fig.update_layout(
         margin={"r": 0, "t": 30, "l": 0, "b": 0},
         height=HEIGHT,
-        legend_title=translations[language]["Year"],
+        legend_title=ut.year[language],
         legend_orientation="h",
         mapbox_center={
             "lat": (lat.min() + lat.max()) / 2,
@@ -241,8 +220,8 @@ def plot_built_agg_img(
         },
     )
 
-    _update_figure(fig, centroid_mollweide, smod, translations, language)
-    _add_bbox_trace(fig, bbox_mollweide, translations, language)
+    _update_figure(fig, centroid_mollweide, smod, language)
+    _add_bbox_trace(fig, bbox_mollweide, language)
 
     fig.update_layout(
         mapbox_layers=[
@@ -268,20 +247,13 @@ def plot_built_agg_img(
     return fig
 
 
-def plot_smod_clusters(smod, bbox_latlon, feature="clusters", language="es"):
-    translations = {
-        "es": {"Year": "Año"},
-        "en": {"Year": "Year"},
-        "pt": {"Year": "Ano"},
-    }
-
+def _smod_to_frame(smod, feature, language):
     if feature == "clusters":
         c_code = 2
     elif feature == "centers":
         c_code = 3
     else:
-        print("Feature must be either clusters or centers.")
-        assert False
+        raise ValueError("Feature must be either clusters or centers.")
 
     smod_lvl_1 = smod // 10
 
@@ -291,8 +263,8 @@ def plot_smod_clusters(smod, bbox_latlon, feature="clusters", language="es"):
     df = smod_lvl_1_df[smod_lvl_1_df.smod >= c_code].drop(columns="smod")
 
     df = df.groupby(["x", "y"]).min().reset_index()
-    df = df.rename(columns={"band": translations[language]["Year"]})
-    df = df.sort_values(translations[language]["Year"]).reset_index(drop=True)
+    df = df.rename(columns={"band": ut.year[language]})
+    df = df.sort_values(ut.year[language]).reset_index(drop=True)
 
     df["geometry"] = df.apply(
         utils.raster.row2cell, res_xy=smod.rio.resolution(), axis=1
@@ -300,9 +272,12 @@ def plot_smod_clusters(smod, bbox_latlon, feature="clusters", language="es"):
 
     gdf = gpd.GeoDataFrame(df.drop(columns=["x", "y"]), crs=smod.rio.crs)
 
-    gdf[translations[language]["Year"]] = gdf[translations[language]["Year"]].astype(
-        str
-    )
+    gdf[ut.year[language]] = gdf[ut.year[language]].astype(str)
+    return gdf
+
+
+def plot_smod_clusters(smod, bbox_latlon, feature="clusters", language="es"):
+    gdf = _smod_to_frame(smod, feature, language)
 
     colors_rgba = [plt.get_cmap("cividis", 10)(i) for i in range(10)]
     cmap_cat = {y: mpl.colors.rgb2hex(c) for y, c in zip(YEARS, colors_rgba)}
@@ -311,10 +286,10 @@ def plot_smod_clusters(smod, bbox_latlon, feature="clusters", language="es"):
     fig = px.choropleth_mapbox(
         gdf,
         geojson=gdf.geometry,
-        color=translations[language]["Year"],
+        color=ut.year[language],
         locations="index",
         hover_name=None,
-        hover_data={translations[language]["Year"]: True, "index": False},
+        hover_data={ut.year[language]: True, "index": False},
         color_discrete_map=cmap_cat,
         opacity=0.5,
         mapbox_style="carto-positron",
@@ -357,33 +332,6 @@ def plot_built_year_img(
 ):
     """Plots built for year using an image overlay."""
 
-    translations = {
-        "es": {
-            "Year": "Año",
-            "Fraction": "Fracción",
-            "Of Construction": "de construcción",
-            "Peripheral Zones": "Zonas periféricas",
-            "Central Zone": "Zona central",
-            "Analysis Zone": "Zona de análisis",
-        },
-        "en": {
-            "Year": "Year",
-            "Fraction": "Fraction",
-            "Of Construction": "of construction",
-            "Peripheral Zones": "Peripheral Zones",
-            "Central Zone": "Central Zone",
-            "Analysis Zone": "Analysis Zone",
-        },
-        "pt": {
-            "Year": "Ano",
-            "Fraction": "Fração",
-            "Of Construction": "de construção",
-            "Peripheral Zones": "Zonas periféricas",
-            "Central Zone": "Zona central",
-            "Analysis Zone": "Zona de análise",
-        },
-    }
-
     resolution = built.rio.resolution()
     pixel_area = abs(np.prod(resolution))
 
@@ -415,7 +363,7 @@ def plot_built_year_img(
     # Create figure
     west, south, east, north = bbox_latlon.bounds
 
-    c_col = f"{translations[language]['Fraction']} <br> {translations[language]['Of Construction']} <br> {year}"
+    c_col = f"{ut.fraction[language]} <br> {ut.of_construction[language]} <br> {year}"
 
     dummy_df = pd.DataFrame({"lat": [0] * 2, "lon": [0] * 2, c_col: [0.0, 1.0]})
     fig = px.scatter_mapbox(
@@ -434,8 +382,8 @@ def plot_built_year_img(
         margin={"r": 0, "t": 30, "l": 0, "b": 0}, height=HEIGHT, legend_orientation="h"
     )
 
-    _update_figure(fig, centroid_mollweide, smod, translations, language)
-    _add_bbox_trace(fig, bbox_mollweide, translations, language)
+    _update_figure(fig, centroid_mollweide, smod, language)
+    _add_bbox_trace(fig, bbox_mollweide, language)
 
     # High res image
     if HIGH_RES:
@@ -469,27 +417,6 @@ def plot_built_year_img(
 def plot_pop_year_img(
     smod, pop, bbox_mollweide, centroid_mollweide, year=2020, language="es"
 ):
-    translations = {
-        "es": {
-            "Population": "Población",
-            "Central Zone": "Zona central",
-            "Peripheral Zones": "Zonas periféricas",
-            "Analysis Zone": "Zona de análisis",
-        },
-        "en": {
-            "Population": "Population",
-            "Central Zone": "Central Zone",
-            "Peripheral Zones": "Peripheral Zones",
-            "Analysis Zone": "Analysis Zone",
-        },
-        "pt": {
-            "Population": "População",
-            "Central Zone": "Zona central",
-            "Peripheral Zones": "Zonas periféricas",
-            "Analysis Zone": "Zona de análise",
-        },
-    }
-
     resolution = pop.rio.resolution()
     pixel_area = abs(np.prod(resolution)) / 1e6
 
@@ -548,7 +475,7 @@ def plot_pop_year_img(
         {
             "lat": [0] * n_classes,
             "lon": [0] * n_classes,
-            translations[language]["Population"]: mid_vals,
+            ut.population[language]: mid_vals,
         }
     )
 
@@ -556,7 +483,7 @@ def plot_pop_year_img(
         dummy_df,
         lat="lat",
         lon="lon",
-        color=translations[language]["Population"],
+        color=ut.population[language],
         color_discrete_map=cmap_d,
         mapbox_style="carto-positron",
     )
@@ -570,8 +497,8 @@ def plot_pop_year_img(
         margin={"r": 0, "t": 30, "l": 0, "b": 0}, height=HEIGHT, legend_orientation="h"
     )
 
-    _update_figure(fig, centroid_mollweide, smod, translations, language)
-    _add_bbox_trace(fig, bbox_mollweide, translations, language)
+    _update_figure(fig, centroid_mollweide, smod, language)
+    _add_bbox_trace(fig, bbox_mollweide, language)
 
     if HIGH_RES:
         img = _resize_image(img)
@@ -608,12 +535,10 @@ def plot_growth(growth_df, *, y_cols, title, ylabel, var_type, language="es"):
 
     fig = p_func(growth_df, x="year", y=y_cols, markers=True)
 
-    translations_year = {"es": "Año", "en": "Year", "pt": "Ano"}
-
     fig.update_layout(
         yaxis_title=ylabel,
         yaxis_tickformat=",.3~f",
-        xaxis_title=translations_year[language],
+        xaxis_title=ut.year[language],
         legend_title=title,
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
     )
@@ -624,31 +549,11 @@ def plot_growth(growth_df, *, y_cols, title, ylabel, var_type, language="es"):
     else:
         fig.update_traces(hovertemplate="%{y:.2f}<extra></extra>")
 
-    name_dict = {
-        "all": "Todas las zonas {} {:.2f}%",
-        "main": "Zona central {} {:.2f}%",
-        "other": "Zonas periféricas  {} {:.2f}%",
-    }
-
-    name_dict_translations = {
-        "es": {
-            "all": "Todas las zonas {} {:.2f}%",
-            "main": "Zona central {} {:.2f}%",
-            "other": "Zonas periféricas {} {:.2f}%",
-        },
-        "en": {
-            "all": "All zones {} {:.2f}%",
-            "main": "Central zone {} {:.2f}%",
-            "other": "Peripheral zones {} {:.2f}%",
-        },
-        "pt": {
-            "all": "Todas as zonas {} {:.2f}%",
-            "main": "Zona central {} {:.2f}%",
-            "other": "Zonas periféricas {} {:.2f}%",
-        },
-    }
-
-    name_dict = name_dict_translations[language]
+    name_dict = dict(
+        all=f"{ut.all_zones[language]} {{}} {{:.2f}}%",
+        main=f"{ut.central_zone[language]} {{}} {{:.2f}}%",
+        other=f"{ut.peripheral_zones[language]} {{}} {{:.2f}}%",
+    )
 
     color_dict = {"all": "black", "main": "maroon", "other": "orange"}
     options = ["all", "main", "other"]
