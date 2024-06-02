@@ -31,6 +31,7 @@ YEARS = [
     "2015",
     "2020",
 ]
+YEARS_UINT8 = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], dtype="uint8")
 
 
 def _update_figure(fig, centroid_mollweide, smod, translations, language):
@@ -125,9 +126,7 @@ def plot_built_poly(built_gdf, bbox_latlon, year=2020):
     return Map
 
 
-def _raster_to_image(built, thresh):
-    years_uint8 = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], dtype="uint8")
-
+def _built_to_bin(built, thresh):
     resolution = built.rio.resolution()
     pixel_area = abs(np.prod(resolution))
 
@@ -141,7 +140,7 @@ def _raster_to_image(built, thresh):
 
     # Create a yearly coded binary built array
     built_bin = (built > thresh).astype("uint8")
-    built_bin *= years_uint8[:, None, None]
+    built_bin *= YEARS_UINT8[:, None, None]
     built_bin.values[built_bin.values == 0] = 200
 
     # Aggregate yearly binary built data
@@ -149,13 +148,19 @@ def _raster_to_image(built, thresh):
     built_bin_agg = np.min(built_bin, axis=0)
     built_bin_agg.values[built_bin_agg == 200] = 0
 
+    return built_bin_agg
+
+
+def _raster_to_image(built, thresh):
+    built_bin_agg = _built_to_bin(built, thresh)
+
     # Create array to hold colorized image
     built_img = np.zeros((*built_bin_agg.shape, 4), dtype="uint8")
 
     # Set colormap
     colors_rgba = [plt.get_cmap("cividis", 10)(i) for i in range(10)]
     colors = (np.array(colors_rgba) * 255).astype("uint8")
-    cmap = {y: c for y, c in zip(years_uint8, colors)}
+    cmap = {y: c for y, c in zip(YEARS_UINT8, colors)}
     cmap_cat = {y: mpl.colors.rgb2hex(c) for y, c in zip(YEARS, colors_rgba)}
 
     # Set colors manually on image array
@@ -595,9 +600,7 @@ def plot_pop_year_img(
     return fig
 
 
-def plot_growth(
-    growth_df, *, y_cols, title, ylabel, var_type, language="es"
-):
+def plot_growth(growth_df, *, y_cols, title, ylabel, var_type, language="es"):
     if var_type == "extensive":
         p_func = px.area
     elif var_type == "intensive":
