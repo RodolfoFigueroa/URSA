@@ -6,7 +6,7 @@ import json
 import dash_bootstrap_components as dbc
 import pandas as pd
 import ursa.heat_islands as ht
-import ursa.plots as plots
+import ursa.plots as up
 import ursa.utils as utils
 import ursa.world_cover as wc
 
@@ -1038,14 +1038,14 @@ def generate_maps(
         df_t_areas = ht.load_or_get_t_areas(bbox_ee, img_cat, masks, path_cache)
         df_land_usage = ht.load_or_get_land_usage_df(bbox_ee, img_cat, path_cache)
 
-        temp_map = plots.heat_islands.plot_cat_map(
+        temp_map = up.heat_islands.plot_cat_map(
             bbox_ee, fua_latlon.centroid, img_cat
         )
-        areas_plot = plots.heat_islands.plot_temp_areas(
+        areas_plot = up.heat_islands.plot_temp_areas(
             df_t_areas, language=language
         )  #
 
-        temps_by_lc_plot = plots.heat_islands.plot_temp_by_lc(
+        temps_by_lc_plot = up.heat_islands.plot_temp_by_lc(
             df_land_usage, language=language
         )  #
 
@@ -1058,10 +1058,10 @@ def generate_maps(
         bbox_latlon, uc_latlon, start_date, end_date, path_cache
     )
 
-    radial_temp_plot = plots.heat_islands.plot_radial_temperature(
+    radial_temp_plot = up.heat_islands.plot_radial_temperature(
         df_f, language=language
     )
-    radial_lc_plot = plots.heat_islands.plot_radial_lc(df_lc, language=language)  #
+    radial_lc_plot = up.heat_islands.plot_radial_lc(df_lc, language=language)  #
 
     return temp_map, areas_plot, temps_by_lc_plot, radial_temp_plot, radial_lc_plot
 

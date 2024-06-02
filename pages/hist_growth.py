@@ -3,7 +3,7 @@ import json
 
 import dash_bootstrap_components as dbc
 import ursa.ghsl as ghsl
-import ursa.plots as plots
+import ursa.plots as up
 import ursa.utils as utils
 
 from components.text import (
@@ -550,20 +550,20 @@ def generate_lines(
     plots = []
     for params in line_plot_params:
         try:
-            lines = ghsl.plot_growth(growth_df, **params, language=language)
+            lines = up.ghsl.plot_growth(growth_df, **params, language=language)
             plots.append(lines)
         except Exception:
-            plots.append(dash.no_update)
+            up.append(dash.no_update)
             error_triggered = True
 
-    map1 = ghsl.plot_built_agg_img(
+    map1 = up.ghsl.plot_built_agg_img(
         smod, built, bbox_mollweide, centroid_mollweide, language=language
     )
-    map2 = ghsl.plot_smod_clusters(smod, bbox_latlon, language=language)
-    map3 = ghsl.plot_built_year_img(
+    map2 = up.ghsl.plot_smod_clusters(smod, bbox_latlon, language=language)
+    map3 = up.ghsl.plot_built_year_img(
         smod, built, bbox_latlon, bbox_mollweide, centroid_mollweide, language=language
     )
-    map4 = ghsl.plot_pop_year_img(
+    map4 = up.ghsl.plot_pop_year_img(
         smod, pop, bbox_mollweide, centroid_mollweide, language=language
     )
 

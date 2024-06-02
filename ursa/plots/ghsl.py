@@ -19,6 +19,19 @@ URL_BUILT = "https://doi.org/10.2905/D07D81B4-7680-4D28-B896-583745C27085"
 URL_POP = "https://doi.org/10.2905/D6D86A90-4351-4508-99C1-CB074B022C4A"
 URL_SMOD = "https://doi.org/10.2905/4606D58A-DC08-463C-86A9-D49EF461C47F"
 
+YEARS = [
+    "1975",
+    "1980",
+    "1985",
+    "1990",
+    "1995",
+    "2000",
+    "2005",
+    "2010",
+    "2015",
+    "2020",
+]
+
 
 def _update_figure(fig, centroid_mollweide, smod, translations, language):
     smod_p = ghsl.smod_polygons(smod, centroid_mollweide)
@@ -112,6 +125,65 @@ def plot_built_poly(built_gdf, bbox_latlon, year=2020):
     return Map
 
 
+def _raster_to_image(built, thresh):
+    years_uint8 = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], dtype="uint8")
+
+    resolution = built.rio.resolution()
+    pixel_area = abs(np.prod(resolution))
+
+    # Create a density array
+    # Only densities can be safely reprojected
+    built = built / pixel_area
+
+    # Reproject
+    built.rio.set_nodata(0)
+    built = built.rio.reproject("EPSG:4326")
+
+    # Create a yearly coded binary built array
+    built_bin = (built > thresh).astype("uint8")
+    built_bin *= years_uint8[:, None, None]
+    built_bin.values[built_bin.values == 0] = 200
+
+    # Aggregate yearly binary built data
+    # Keep earliest year of observed urbanization
+    built_bin_agg = np.min(built_bin, axis=0)
+    built_bin_agg.values[built_bin_agg == 200] = 0
+
+    # Create array to hold colorized image
+    built_img = np.zeros((*built_bin_agg.shape, 4), dtype="uint8")
+
+    # Set colormap
+    colors_rgba = [plt.get_cmap("cividis", 10)(i) for i in range(10)]
+    colors = (np.array(colors_rgba) * 255).astype("uint8")
+    cmap = {y: c for y, c in zip(years_uint8, colors)}
+    cmap_cat = {y: mpl.colors.rgb2hex(c) for y, c in zip(YEARS, colors_rgba)}
+
+    # Set colors manually on image array
+    for year, color in cmap.items():
+        mask = built_bin_agg == year
+        built_img[mask] = color
+
+    # Create image bounding box
+    lonmin, latmin, lonmax, latmax = built_bin_agg.rio.bounds()
+    coordinates = np.array(
+        [
+            [lonmin, latmin],
+            [lonmax, latmin],
+            [lonmax, latmax],
+            [lonmin, latmax],
+        ]
+    )
+
+    # Create Image object (memory haevy)
+    img = ImageOps.flip(Image.fromarray(built_img))
+
+    # High res image
+    if HIGH_RES:
+        img = _resize_image(img)
+
+    return img, cmap_cat, coordinates
+
+
 def plot_built_agg_img(
     smod, built, bbox_mollweide, centroid_mollweide, thresh=0.2, language="es"
 ):
@@ -138,74 +210,12 @@ def plot_built_agg_img(
         },
     }
 
-    years = [
-        "1975",
-        "1980",
-        "1985",
-        "1990",
-        "1995",
-        "2000",
-        "2005",
-        "2010",
-        "2015",
-        "2020",
-    ]
-    years_uint8 = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], dtype="uint8")
+    img, cmap_cat, coordinates = _raster_to_image(built, thresh)
 
-    resolution = built.rio.resolution()
-    pixel_area = abs(np.prod(resolution))
+    lon = coordinates[:, 0]
+    lat = coordinates[:, 1]
 
-    # Create a density array
-    # Only densities can be safely reprojected
-    built = built / pixel_area
-
-    # Reproject
-    built.rio.set_nodata(0)
-    built = built.rio.reproject("EPSG:4623")
-
-    # Create a yearly coded binary built array
-    built_bin = (built > thresh).astype("uint8")
-    built_bin *= years_uint8[:, None, None]
-    built_bin.values[built_bin.values == 0] = 200
-
-    # Aggregate yearly binary built data
-    # Keep earliest year of observed urbanization
-    built_bin_agg = np.min(built_bin, axis=0)
-    built_bin_agg.values[built_bin_agg == 200] = 0
-
-    # Create high resolution raster in lat-lon
-
-    # Create array to hold colorized image
-    built_img = np.zeros((*built_bin_agg.shape, 4), dtype="uint8")
-
-    # Set colormap
-    colors_rgba = [plt.get_cmap("cividis", 10)(i) for i in range(10)]
-    colors = (np.array(colors_rgba) * 255).astype("uint8")
-    cmap = {y: c for y, c in zip(years_uint8, colors)}
-    cmap_cat = {y: mpl.colors.rgb2hex(c) for y, c in zip(years, colors_rgba)}
-
-    # Set colors manually on image array
-    for year, color in cmap.items():
-        mask = built_bin_agg == year
-        built_img[mask] = color
-
-    # Create image bounding box
-    lonmin, latmin, lonmax, latmax = built_bin_agg.rio.bounds()
-    coordinates = [
-        [lonmin, latmin],
-        [lonmax, latmin],
-        [lonmax, latmax],
-        [lonmin, latmax],
-    ]
-
-    # Create Image object (memory haevy)
-    img = ImageOps.flip(Image.fromarray(built_img))
-
-    # High res image
-    if HIGH_RES:
-        img = _resize_image(img)
-
-    dummy_df = pd.DataFrame({"lat": [0] * 10, "lon": [0] * 10, "Year": years})
+    dummy_df = pd.DataFrame({"lat": [0] * 10, "lon": [0] * 10, "Year": YEARS})
     fig = px.scatter_mapbox(
         dummy_df,
         lat="lat",
@@ -220,7 +230,10 @@ def plot_built_agg_img(
         height=HEIGHT,
         legend_title=translations[language]["Year"],
         legend_orientation="h",
-        mapbox_center={"lat": (latmin + latmax) / 2, "lon": (lonmin + lonmax) / 2},
+        mapbox_center={
+            "lat": (lat.min() + lat.max()) / 2,
+            "lon": (lon.min() + lon.max()) / 2,
+        },
     )
 
     _update_figure(fig, centroid_mollweide, smod, translations, language)
@@ -286,23 +299,10 @@ def plot_smod_clusters(smod, bbox_latlon, feature="clusters", language="es"):
         str
     )
 
-    # Set colormap
-    years = [
-        "1975",
-        "1980",
-        "1985",
-        "1990",
-        "1995",
-        "2000",
-        "2005",
-        "2010",
-        "2015",
-        "2020",
-    ]
     colors_rgba = [plt.get_cmap("cividis", 10)(i) for i in range(10)]
-    cmap_cat = {y: mpl.colors.rgb2hex(c) for y, c in zip(years, colors_rgba)}
+    cmap_cat = {y: mpl.colors.rgb2hex(c) for y, c in zip(YEARS, colors_rgba)}
 
-    gdf = gdf.to_crs(epsg=4326).reset_index()
+    gdf = gdf.to_crs("EPSG:4326").reset_index()
     fig = px.choropleth_mapbox(
         gdf,
         geojson=gdf.geometry,
@@ -337,8 +337,6 @@ def plot_smod_clusters(smod, bbox_latlon, feature="clusters", language="es"):
         # width=600,
         legend_orientation="h",
     )
-
-    # fig.write_html(f'fig_urban_{feature}_historic.html')
 
     return fig
 
@@ -598,7 +596,7 @@ def plot_pop_year_img(
 
 
 def plot_growth(
-    growth_df, *, y_cols, title, ylabel, var_type="extensive", language="es"
+    growth_df, *, y_cols, title, ylabel, var_type, language="es"
 ):
     if var_type == "extensive":
         p_func = px.area
