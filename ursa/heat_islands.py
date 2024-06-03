@@ -380,8 +380,8 @@ def load_or_get_radial_distributions(
         df_lc = get_radial_lc(bbox_latlon, uc_latlon, lc)
         df_f = get_radial_f(bbox_latlon, uc_latlon, suhi)
 
-        df_lc.to_csv(fpath_lc)
-        df_f.to_csv(fpath_f)
+        df_lc.to_csv(fpath_lc, index=False)
+        df_f.to_csv(fpath_f, index=False)
 
     return df_f, df_lc
 

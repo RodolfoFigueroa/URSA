@@ -1021,7 +1021,7 @@ def generate_maps(
     uc_latlon = shape(uc_latlon)
     bbox_ee = utils.raster.bbox_to_ee(bbox_latlon)
 
-    start_date, end_date = ht.date_format(SEASON, YEAR)
+    start_date, end_date = utils.date.date_format(SEASON, YEAR)
 
     try:
         lst, proj = ht.get_lst(bbox_ee, start_date, end_date)
