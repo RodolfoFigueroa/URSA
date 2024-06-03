@@ -424,3 +424,16 @@ def pop_2_density(raster, units="ha", save=False):
         density_xr.rio.to_raster(raster.parent / fname)
 
     return density_xr
+
+
+def get_raster_bounds(img):
+    lonmin, latmin, lonmax, latmax = img.rio.bounds()
+    coordinates = np.array(
+        [
+            [lonmin, latmin],
+            [lonmax, latmin],
+            [lonmax, latmax],
+            [lonmin, latmax],
+        ]
+    )
+    return coordinates
