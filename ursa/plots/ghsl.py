@@ -10,15 +10,11 @@ import ursa.ghsl as ghsl
 import ursa.translations as ut
 import ursa.utils as utils
 
-import ursa.utils.raster
-
 from PIL import Image, ImageOps
 
 
 HEIGHT = 600
 HIGH_RES = True
-
-N_POP_CLASSES = 7
 
 URL_BUILT = "https://doi.org/10.2905/D07D81B4-7680-4D28-B896-583745C27085"
 URL_POP = "https://doi.org/10.2905/D6D86A90-4351-4508-99C1-CB074B022C4A"
@@ -172,8 +168,7 @@ def _raster_to_image(built, thresh):
     for year, color in cmap.items():
         mask = built_bin_agg == year
         built_img[mask] = color
-
-    # Create image bounding box
+        
     coordinates = utils.raster.get_raster_bounds(built_bin_agg)
 
     # Create Image object (memory haevy)
@@ -342,7 +337,7 @@ def plot_built_year_img(
 ):
     """Plots built for year using an image overlay."""
 
-    built = _get_built_fraction(built, year=year)
+    built = _get_built_fraction(built)
 
     # Get colorized image.
     cmap = plt.get_cmap("cividis").copy()
@@ -352,7 +347,6 @@ def plot_built_year_img(
     colorized = np.uint8(colorized * 255)
     img = ImageOps.flip(Image.fromarray(colorized))
 
-    # Create image bounding box
     coordinates = utils.raster.get_raster_bounds(built)
     lon = coordinates[:, 0]
     lat = coordinates[:, 1]
@@ -369,10 +363,7 @@ def plot_built_year_img(
         mapbox_style="carto-positron",
     )
     fig.update_layout(
-        mapbox_center={
-            "lat": (lat.min() + lat.max()) / 2,
-            "lon": (lon.min() + lon.max()) / 2,
-        }
+        mapbox_center={"lat": (lat.min() + lat.max()) / 2, "lon": (lon.min() + lon.max()) / 2}
     )
 
     fig.update_layout(
@@ -411,7 +402,7 @@ def plot_built_year_img(
     return fig
 
 
-def _get_normalized_population(pop, year=2020):
+def _get_pop_raster(pop, year=2020):
     resolution = pop.rio.resolution()
     pixel_area = abs(np.prod(resolution)) / 1e6
 
@@ -425,22 +416,22 @@ def _get_normalized_population(pop, year=2020):
 
     # Get back counts
     pop = pop * utils.raster.get_area_grid(pop, "km")
-
-    # Normalize values for colormap
-    pop_min = np.unique(pop)[1]
-    bounds = np.array(
-        [-1, pop_min / 2.0, 5.5, 20.5, 100.5, 300.5, 500.5, 1000.5, 10000]
-    )
-    norm = mpl.colors.BoundaryNorm(boundaries=bounds, ncolors=N_POP_CLASSES + 1)
-    pop_norm = norm(pop).data / N_POP_CLASSES
-
-    return pop_norm
+    return pop
 
 
 def plot_pop_year_img(
     smod, pop, bbox_mollweide, centroid_mollweide, year=2020, language="es"
 ):
-    pop_norm = _get_normalized_population(pop, year=year)
+    pop = _get_pop_raster(pop, year=year)
+
+    # Normalize values for colormap
+    n_classes = 7
+    pop_min = np.unique(pop)[1]
+    bounds = np.array(
+        [-1, pop_min / 2.0, 5.5, 20.5, 100.5, 300.5, 500.5, 1000.5, 10000]
+    )
+    norm = mpl.colors.BoundaryNorm(boundaries=bounds, ncolors=n_classes + 1)
+    pop_norm = norm(pop).data / n_classes
 
     # Get colorized image.
     cmap = plt.get_cmap("cividis").copy()
@@ -450,7 +441,6 @@ def plot_pop_year_img(
     colorized = np.uint8(colorized * 255)
     img = ImageOps.flip(Image.fromarray(colorized))
 
-    # Create image bounding box
     coordinates = utils.raster.get_raster_bounds(pop)
     lon = coordinates[:, 0]
     lat = coordinates[:, 1]
@@ -471,8 +461,8 @@ def plot_pop_year_img(
 
     dummy_df = pd.DataFrame(
         {
-            "lat": [0] * N_POP_CLASSES,
-            "lon": [0] * N_POP_CLASSES,
+            "lat": [0] * n_classes,
+            "lon": [0] * n_classes,
             ut.population[language]: mid_vals,
         }
     )
@@ -486,10 +476,7 @@ def plot_pop_year_img(
         mapbox_style="carto-positron",
     )
     fig.update_layout(
-        mapbox_center={
-            "lat": (lat.min() + lat.max()) / 2,
-            "lon": (lon.min() + lon.max()) / 2,
-        }
+        mapbox_center={"lat": (lat.min() + lat.max()) / 2, "lon": (lon.min() + lon.max()) / 2}
     )
 
     fig.for_each_trace(lambda t: t.update(name=names[t.name]))
