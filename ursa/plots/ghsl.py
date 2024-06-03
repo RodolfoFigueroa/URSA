@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 import ursa.ghsl as ghsl
-import ursa.translations as ut
+import ursa.translations.ghsl as ut
 import ursa.utils as utils
 
 from PIL import Image, ImageOps

@@ -3,8 +3,6 @@ import ursa.utils as utils
 
 from dash import html
 
-import ursa.utils.image
-
 HOME_ICON_PATH = "./assets/Icon_map.png"
 LAND_COVER_ICON_PATH = "./assets/Icon_Cobertura.png"
 HEAT_ISLANDS_ICON_PATH = "./assets/Icon_Islas.png"

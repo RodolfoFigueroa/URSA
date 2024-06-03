@@ -10,8 +10,6 @@ import ursa.utils as utils
 
 from shapely.geometry import shape
 
-import ursa.utils.raster
-
 
 def download_s3(
     bbox,

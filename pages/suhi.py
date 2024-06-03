@@ -21,12 +21,6 @@ from layouts.common import generate_drive_text_translation
 from pathlib import Path
 from shapely.geometry import shape
 
-import ursa.plots.heat_islands
-
-import ursa.utils.date
-import ursa.utils.geometry
-import ursa.utils.raster
-
 # Traducciones
 with open(
     "./data/translations/suhi/translations_suhi.json", "r", encoding="utf-8"

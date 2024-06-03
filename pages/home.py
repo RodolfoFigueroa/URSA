@@ -10,9 +10,6 @@ from dash import callback, html, Input, Output, State
 from pathlib import Path
 from shapely.geometry import shape
 
-import ursa.utils.geometry
-import ursa.utils.raster
-
 dash.register_page(__name__, path="/")
 
 PATH_FUA = Path("./data/output/cities/")

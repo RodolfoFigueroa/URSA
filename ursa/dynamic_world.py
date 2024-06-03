@@ -4,12 +4,10 @@ import geemap.plotlymap as geemap
 import geopandas as gpd
 import pandas as pd
 import plotly.express as px
+import ursa.translations.dynamic_world as ut
 import ursa.utils as utils
 
 from shapely.geometry import Polygon
-
-import ursa.utils.date
-import ursa.utils.raster
 
 class_dict = {
     "0": "Agua",
@@ -320,54 +318,21 @@ def load_or_get_lc_df(bbox_latlon, path_cache, force=False):
     return df
 
 
-def plot_lc_year(bbox_latlon, path_cache, year=2022, language="es"):
-    translations = {
-        "x_axis_title": {"es": "Área (km²)", "en": "Area (km²)", "pt": "Área (km²)"},
-        "y_axis_title": {
-            "es": "Tipo de cobertura",
-            "en": "Type of Coverage",
-            "pt": "Tipo de Cobertura",
-        },
-    }
-
+def _get_lc_area_df(bbox_latlon, path_cache, year=2022, language="es"):
     category_translations = {
-        "es": {
-            "Agua": "Agua",
-            "Árboles": "Árboles",
-            "Césped/Pasto": "Césped/Pasto",
-            "Vegetación inundada": "Vegetación inundada",
-            "Cultivos": "Cultivos",
-            "Arbusto y matorral": "Arbusto y matorral",
-            "Urbanización": "Urbanización",
-            "Descubierto": "Descubierto",
-            "Nieve y hielo": "Nieve y hielo",
-        },
-        "en": {
-            "Agua": "Water",
-            "Árboles": "Trees",
-            "Césped/Pasto": "Grass/Lawn",
-            "Vegetación inundada": "Flooded Vegetation",
-            "Cultivos": "Crops",
-            "Arbusto y matorral": "Shrub and Scrub",
-            "Urbanización": "Urbanization",
-            "Descubierto": "Bare",
-            "Nieve y hielo": "Snow and Ice",
-        },
-        "pt": {
-            "Agua": "Água",
-            "Árboles": "Árvores",
-            "Césped/Pasto": "Grama/Relva",
-            "Vegetación inundada": "Vegetação Alagada",
-            "Cultivos": "Culturas",
-            "Arbusto y matorral": "Arbusto e Mato",
-            "Urbanización": "Urbanização",
-            "Descubierto": "Descoberto",
-            "Nieve y hielo": "Neve e Gelo",
-        },
+        "Agua": ut.water[language],
+        "Árboles": ut.trees[language],
+        "Césped/Pasto": ut.grass[language],
+        "Vegetación inundada": ut.flooded_vegetation[language],
+        "Cultivos": ut.crops[language],
+        "Arbusto y matorral": ut.shrub_scrub[language],
+        "Urbanización": ut.urbanization[language],
+        "Descubierto": ut.bare[language],
+        "Nieve y hielo": ut.snow_ice[language],
     }
 
-    x_col = translations["x_axis_title"][language]
-    y_col = translations["y_axis_title"][language]
+    x_col = ut.area_km[language]
+    y_col = ut.coverage_type[language]
 
     lc_df = load_or_get_lc_df(bbox_latlon, path_cache)
 
@@ -381,14 +346,19 @@ def plot_lc_year(bbox_latlon, path_cache, year=2022, language="es"):
 
     lc_present[x_col] = round(lc_present[x_col]).astype(int)
 
-    #
-    lc_present[y_col] = lc_present[y_col].map(category_translations[language])
+    lc_present[y_col] = lc_present[y_col].map(category_translations)
+
+    return lc_present
+
+
+def plot_lc_year(bbox_latlon, path_cache, year=2022, language="es"):
+    lc_present = _get_lc_area_df(bbox_latlon, path_cache, year=year, language=language)
 
     fig = px.bar(
         lc_present,
-        x=x_col,
-        y=y_col,
-        color=y_col,
+        x=ut.area_km[language],
+        y=ut.coverage_type[language],
+        color=ut.coverage_type[language],
         color_discrete_map=colors,
         text_auto=True,
     )
@@ -401,49 +371,15 @@ def plot_lc_year(bbox_latlon, path_cache, year=2022, language="es"):
 
 def plot_lc_time_series(bbox_latlon, path_cache, language="es"):
     category_translations = {
-        "es": {
-            "Agua": "Agua",
-            "Árboles": "Árboles",
-            "Césped/Pasto": "Césped/Pasto",
-            "Vegetación inundada": "Vegetación inundada",
-            "Cultivos": "Cultivos",
-            "Arbusto y matorral": "Arbusto y matorral",
-            "Urbanización": "Urbanización",
-            "Descubierto": "Descubierto",
-            "Nieve y hielo": "Nieve y hielo",
-        },
-        "en": {
-            "Agua": "Water",
-            "Árboles": "Trees",
-            "Césped/Pasto": "Grass/Lawn",
-            "Vegetación inundada": "Flooded Vegetation",
-            "Cultivos": "Crops",
-            "Arbusto y matorral": "Shrub and Scrub",
-            "Urbanización": "Urbanization",
-            "Descubierto": "Bare",
-            "Nieve y hielo": "Snow and Ice",
-        },
-        "pt": {
-            "Agua": "Água",
-            "Árboles": "Árvores",
-            "Césped/Pasto": "Grama/Relva",
-            "Vegetación inundada": "Vegetação Alagada",
-            "Cultivos": "Culturas",
-            "Arbusto y matorral": "Arbusto e Mato",
-            "Urbanización": "Urbanização",
-            "Descubierto": "Descoberto",
-            "Nieve y hielo": "Neve e Gelo",
-        },
-    }
-
-    translations = {
-        "y_axis_title": {"es": "Área (km²)", "en": "Area (km²)", "pt": "Área (km²)"},
-        "x_axis_title": {"es": "Año", "en": "Year", "pt": "Ano"},
-        "legend_title": {
-            "es": "Tipo de cobertura",
-            "en": "Type of Coverage",
-            "pt": "Tipo de Cobertura",
-        },
+        "Agua": ut.water[language],
+        "Árboles": ut.trees[language],
+        "Césped/Pasto": ut.grass[language],
+        "Vegetación inundada": ut.flooded_vegetation[language],
+        "Cultivos": ut.crops[language],
+        "Arbusto y matorral": ut.shrub_scrub[language],
+        "Urbanización": ut.urbanization[language],
+        "Descubierto": ut.bare[language],
+        "Nieve y hielo": ut.snow_ice[language],
     }
 
     lc_df = load_or_get_lc_df(bbox_latlon, path_cache)
@@ -451,9 +387,9 @@ def plot_lc_time_series(bbox_latlon, path_cache, language="es"):
     fig = px.area(lc_df, color_discrete_map=colors, markers=True)
 
     fig.update_layout(
-        yaxis_title=translations["y_axis_title"][language],
-        xaxis_title=translations["x_axis_title"][language],
-        legend_title=translations["legend_title"][language],
+        xaxis_title=ut.year[language],
+        yaxis_title=ut.area_km[language],
+        legend_title=ut.coverage_type[language],
         hovermode="x",
     )
 
@@ -465,7 +401,7 @@ def plot_lc_time_series(bbox_latlon, path_cache, language="es"):
         cf = lc_df[col].iloc[-1]
         delta = (cf - c0) / c0 * 100
         up_down = "▲" if delta > 0 else "▼"
-        translated_col = category_translations[language].get(col, col)
+        translated_col = category_translations.get(col, col)
         names[col] = f"{translated_col} {up_down} {delta:0.2f}%"
 
     fig.for_each_trace(lambda t: t.update(name=names[t.name]))

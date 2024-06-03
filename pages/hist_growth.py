@@ -17,10 +17,6 @@ from pathlib import Path
 from shapely.geometry import shape
 from zipfile import ZipFile
 
-import ursa.plots.ghsl
-import ursa.utils.geometry
-
-
 # Traducciones
 with open(
     "./data/translations/hist_grow/translations_hist.json", "r", encoding="utf-8"

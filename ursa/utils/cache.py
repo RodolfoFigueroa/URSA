@@ -3,9 +3,6 @@ import json
 import geopandas as gpd
 import ursa.utils as utils
 
-import ursa.utils.geometry
-import ursa.utils.raster
-
 
 def generate_hash_files(path_cache):
     df = gpd.read_file(path_cache / "cities_fua.gpkg")

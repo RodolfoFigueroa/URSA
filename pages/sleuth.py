@@ -26,8 +26,6 @@ from rasterio.enums import Resampling
 from shapely.geometry import shape
 from sleuth_sklearn.estimator import SLEUTH
 
-import ursa.utils.geometry
-
 # Traducciones
 with open(
     "./data/translations/sleuth/translations_sleuth.json", "r", encoding="utf-8"
