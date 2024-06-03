@@ -561,7 +561,7 @@ def generate_lines(
     )
     map2 = up.ghsl.plot_smod_clusters(smod, bbox_latlon, language=language)
     map3 = up.ghsl.plot_built_year_img(
-        smod, built, bbox_latlon, bbox_mollweide, centroid_mollweide, language=language
+        smod, built, bbox_mollweide, centroid_mollweide, language=language
     )
     map4 = up.ghsl.plot_pop_year_img(
         smod, pop, bbox_mollweide, centroid_mollweide, language=language

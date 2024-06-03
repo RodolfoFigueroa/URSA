@@ -321,17 +321,7 @@ def plot_smod_clusters(smod, bbox_latlon, feature="clusters", language="es"):
     return fig
 
 
-def plot_built_year_img(
-    smod,
-    built,
-    bbox_latlon,
-    bbox_mollweide,
-    centroid_mollweide,
-    year=2020,
-    language="es",
-):
-    """Plots built for year using an image overlay."""
-
+def _get_built_fraction(built, year=2020):
     resolution = built.rio.resolution()
     pixel_area = abs(np.prod(resolution))
 
@@ -342,6 +332,21 @@ def plot_built_year_img(
 
     # Reprojecto to lat lon
     built = built.rio.reproject(dst_crs=4326)
+
+    return built
+
+
+def plot_built_year_img(
+    smod,
+    built,
+    bbox_mollweide,
+    centroid_mollweide,
+    year=2020,
+    language="es",
+):
+    """Plots built for year using an image overlay."""
+
+    built = _get_built_fraction(built)
 
     # Get colorized image.
     cmap = plt.get_cmap("cividis").copy()
@@ -359,9 +364,6 @@ def plot_built_year_img(
         [lonmax, latmax],
         [lonmin, latmax],
     ]
-
-    # Create figure
-    west, south, east, north = bbox_latlon.bounds
 
     c_col = f"{ut.fraction[language]} <br> {ut.of_construction[language]} <br> {year}"
 
