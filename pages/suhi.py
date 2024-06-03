@@ -858,30 +858,8 @@ def _download_handler(n_clicks, id_hash, bbox_latlon, task_name, download_type):
     path_cache = Path(f"./data/cache/{id_hash}")
 
     if task_name is None:
-        start_date, end_date = utils.date.date_format(SEASON, YEAR)
-
         bbox_latlon = shape(bbox_latlon)
-        bbox_ee = utils.raster.bbox_to_ee(bbox_latlon)
-
-        lst, proj = ht.get_lst(bbox_ee, start_date, end_date)
-        _, masks = wc.get_cover_and_masks(bbox_ee, proj)
-
-        if download_type == "normal":
-            img_cat = ht.get_cat_suhi(lst, masks, path_cache)
-        elif download_type == "raw":
-            img_cat = ht.get_cat_suhi_raw(lst, masks, path_cache)
-        elif download_type == "celsius":
-            img_cat = ht.get_cat_suhi_celsius(lst, masks)
-
-        task = ee.batch.Export.image.toDrive(
-            image=img_cat,
-            description="suhi_raster_" + download_type,
-            scale=img_cat.projection().nominalScale(),
-            region=bbox_ee,
-            crs=img_cat.projection(),
-            fileFormat="GeoTIFF",
-        )
-        task.start()
+        task = ht.download_temperature_raster(bbox_latlon, path_cache, download_type)
         status = task.status()
 
         return (False, status["name"], {"display": "block"}, "Iniciando descarga")
@@ -1037,7 +1015,7 @@ def generate_maps(
 
         temps_by_lc_plot = up.heat_islands.plot_temp_by_lc(
             df_land_usage, language=language
-        )  #
+        )
 
     except Exception as e:
         temp_map = dash.no_update
@@ -1049,7 +1027,7 @@ def generate_maps(
     )
 
     radial_temp_plot = up.heat_islands.plot_radial_temperature(df_f, language=language)
-    radial_lc_plot = up.heat_islands.plot_radial_lc(df_lc, language=language)  #
+    radial_lc_plot = up.heat_islands.plot_radial_lc(df_lc, language=language)
 
     return temp_map, areas_plot, temps_by_lc_plot, radial_temp_plot, radial_lc_plot
 

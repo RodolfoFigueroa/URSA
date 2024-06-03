@@ -5,9 +5,7 @@ import geopandas as gpd
 import pandas as pd
 import ursa.ghsl as ghsl
 import ursa.sleuth_prep as sp
-
 import ursa.utils as utils
-
 import ursa.world_cover as wc
 
 from typing import Tuple, List
@@ -497,3 +495,30 @@ def calculate_road_area(bbox, path_cache, cluster):
     total_lenght = edges[pip]["length"].sum() / 1000
 
     return total_lenght
+
+
+def download_temperature_raster(bbox_latlon, path_cache, download_type):
+    start_date, end_date = utils.date.date_format("Qall", 2022)
+
+    bbox_ee = utils.raster.bbox_to_ee(bbox_latlon)
+
+    lst, proj = get_lst(bbox_ee, start_date, end_date)
+    _, masks = wc.get_cover_and_masks(bbox_ee, proj)
+
+    if download_type == "normal":
+        img_cat = get_cat_suhi(lst, masks, path_cache)
+    elif download_type == "raw":
+        img_cat = get_cat_suhi_raw(lst, masks, path_cache)
+    elif download_type == "celsius":
+        img_cat = get_cat_suhi_celsius(lst, masks)
+
+    task = ee.batch.Export.image.toDrive(
+        image=img_cat,
+        description="suhi_raster_" + download_type,
+        scale=img_cat.projection().nominalScale(),
+        region=bbox_ee,
+        crs=img_cat.projection(),
+        fileFormat="GeoTIFF",
+    )
+    task.start()
+    return task
