@@ -16,6 +16,8 @@ from PIL import Image, ImageOps
 HEIGHT = 600
 HIGH_RES = True
 
+N_POP_CLASSES = 7
+
 URL_BUILT = "https://doi.org/10.2905/D07D81B4-7680-4D28-B896-583745C27085"
 URL_POP = "https://doi.org/10.2905/D6D86A90-4351-4508-99C1-CB074B022C4A"
 URL_SMOD = "https://doi.org/10.2905/4606D58A-DC08-463C-86A9-D49EF461C47F"
@@ -168,7 +170,7 @@ def _raster_to_image(built, thresh):
     for year, color in cmap.items():
         mask = built_bin_agg == year
         built_img[mask] = color
-        
+
     coordinates = utils.raster.get_raster_bounds(built_bin_agg)
 
     # Create Image object (memory haevy)
@@ -363,7 +365,10 @@ def plot_built_year_img(
         mapbox_style="carto-positron",
     )
     fig.update_layout(
-        mapbox_center={"lat": (lat.min() + lat.max()) / 2, "lon": (lon.min() + lon.max()) / 2}
+        mapbox_center={
+            "lat": (lat.min() + lat.max()) / 2,
+            "lon": (lon.min() + lon.max()) / 2,
+        }
     )
 
     fig.update_layout(
@@ -419,12 +424,7 @@ def _get_pop_raster(pop, year=2020):
     return pop
 
 
-def plot_pop_year_img(
-    smod, pop, bbox_mollweide, centroid_mollweide, year=2020, language="es"
-):
-    pop = _get_pop_raster(pop, year=year)
-
-    # Normalize values for colormap
+def _normalize_pop_raster(pop):
     n_classes = 7
     pop_min = np.unique(pop)[1]
     bounds = np.array(
@@ -432,6 +432,15 @@ def plot_pop_year_img(
     )
     norm = mpl.colors.BoundaryNorm(boundaries=bounds, ncolors=n_classes + 1)
     pop_norm = norm(pop).data / n_classes
+
+    return pop_norm
+
+
+def plot_pop_year_img(
+    smod, pop, bbox_mollweide, centroid_mollweide, year=2020, language="es"
+):
+    pop = _get_pop_raster(pop, year=year)
+    pop_norm = _normalize_pop_raster(pop)
 
     # Get colorized image.
     cmap = plt.get_cmap("cividis").copy()
@@ -461,8 +470,8 @@ def plot_pop_year_img(
 
     dummy_df = pd.DataFrame(
         {
-            "lat": [0] * n_classes,
-            "lon": [0] * n_classes,
+            "lat": [0] * N_POP_CLASSES,
+            "lon": [0] * N_POP_CLASSES,
             ut.population[language]: mid_vals,
         }
     )
@@ -476,7 +485,10 @@ def plot_pop_year_img(
         mapbox_style="carto-positron",
     )
     fig.update_layout(
-        mapbox_center={"lat": (lat.min() + lat.max()) / 2, "lon": (lon.min() + lon.max()) / 2}
+        mapbox_center={
+            "lat": (lat.min() + lat.max()) / 2,
+            "lon": (lon.min() + lon.max()) / 2,
+        }
     )
 
     fig.for_each_trace(lambda t: t.update(name=names[t.name]))
