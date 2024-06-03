@@ -6,7 +6,9 @@ coverage_type = dict(es="Tipo de cobertura", en="Coverage type", pt="Tipo de cob
 
 crops = dict(es="Cultivos", en="Crops", pt="Culturas")
 
-flooded_vegetation = dict(es="Vegetación inundada", en="Flooded vegetation", pt="Vegetação alagada")
+flooded_vegetation = dict(
+    es="Vegetación inundada", en="Flooded vegetation", pt="Vegetação alagada"
+)
 
 grass = dict(es="Césped/Pasto", en="Grass/Lawn", pt="Grama/Relva")
 
