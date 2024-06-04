@@ -295,6 +295,11 @@ def plot_smod_clusters(smod, bbox_latlon, feature="clusters", language="es"):
         }
     )
 
+    bbox_mollweide = utils.geometry.reproject_geometry(
+        bbox_latlon, "ESRI:54009"
+    ).envelope
+    _add_bbox_trace(fig, bbox_mollweide, language)
+
     fig.add_annotation(
         text=f'Datos de: <a href="{URL_SMOD}"">GHS-SMOD</a>',
         showarrow=False,
