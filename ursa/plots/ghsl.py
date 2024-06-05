@@ -269,7 +269,9 @@ def _smod_to_frame(smod, feature="clusters", language="es"):
     return gdf
 
 
-def plot_smod_clusters(smod, bbox_latlon, feature="clusters", language="es"):
+def plot_smod_clusters(
+    smod, bbox_latlon, feature="clusters", language="es", trace=None
+):
     gdf = _smod_to_frame(smod, feature, language)
 
     colors_rgba = [plt.get_cmap("cividis", 10)(i) for i in range(10)]
@@ -295,10 +297,8 @@ def plot_smod_clusters(smod, bbox_latlon, feature="clusters", language="es"):
         }
     )
 
-    bbox_mollweide = utils.geometry.reproject_geometry(
-        bbox_latlon, "ESRI:54009"
-    ).envelope
-    _add_bbox_trace(fig, bbox_mollweide, language)
+    if trace is not None:
+        _add_bbox_trace(fig, trace, language)
 
     fig.add_annotation(
         text=f'Datos de: <a href="{URL_SMOD}"">GHS-SMOD</a>',
