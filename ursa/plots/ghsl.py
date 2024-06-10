@@ -37,13 +37,33 @@ YEARS = [
 YEARS_UINT8 = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], dtype="uint8")
 
 
-def _update_figure(fig, centroid_mollweide, smod, language):
+def _get_cluster_bounds(smod, centroid_mollweide):
+    smod_p = ghsl.smod_polygons(smod, centroid_mollweide)
+    clusters_2020 = smod_p[(smod_p.year == 2020) & (smod_p["class"] == 2)]
+    clusters_2020 = clusters_2020.to_crs(4326)
+
+    dfs_main, dfs_other = [], []
+    for _, row in clusters_2020.iterrows():
+        linestring = row.geometry.exterior
+        x, y = linestring.xy
+        p_df = pd.DataFrame({"lats": y, "lons": x})
+
+        if row.is_main:
+            dfs_main.append(p_df)
+        else:
+            dfs_other.append(p_df)
+
+    return dfs_main, dfs_other
+
+
+def _add_cluster_bounds(fig, centroid_mollweide, smod, language):
     smod_p = ghsl.smod_polygons(smod, centroid_mollweide)
     clusters_2020 = smod_p[(smod_p.year == 2020) & (smod_p["class"] == 2)]
     clusters_2020 = clusters_2020.to_crs(4326)
 
     n_mains = 0
     n_other = 0
+
     for _, row in clusters_2020.iterrows():
         if row.is_main:
             name = ut.central_zone[language]
@@ -213,7 +233,7 @@ def plot_built_agg_img(
         },
     )
 
-    _update_figure(fig, centroid_mollweide, smod, language)
+    _add_cluster_bounds(fig, centroid_mollweide, smod, language)
     _add_bbox_trace(fig, bbox_mollweide, language)
 
     fig.update_layout(
@@ -380,7 +400,7 @@ def plot_built_year_img(
         margin={"r": 0, "t": 30, "l": 0, "b": 0}, height=HEIGHT, legend_orientation="h"
     )
 
-    _update_figure(fig, centroid_mollweide, smod, language)
+    _add_cluster_bounds(fig, centroid_mollweide, smod, language)
     _add_bbox_trace(fig, bbox_mollweide, language)
 
     # High res image
@@ -502,7 +522,7 @@ def plot_pop_year_img(
         margin={"r": 0, "t": 30, "l": 0, "b": 0}, height=HEIGHT, legend_orientation="h"
     )
 
-    _update_figure(fig, centroid_mollweide, smod, language)
+    _add_cluster_bounds(fig, centroid_mollweide, smod, language)
     _add_bbox_trace(fig, bbox_mollweide, language)
 
     if HIGH_RES:
