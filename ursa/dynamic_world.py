@@ -36,50 +36,30 @@ colors = {
 columns = list(class_dict.values())
 
 
+def generate_category_translations(language):
+    return {
+        "Agua": ut.water[language],
+        "Árboles": ut.trees[language],
+        "Césped/Pasto": ut.grass[language],
+        "Vegetación inundada": ut.flooded_vegetation[language],
+        "Cultivos": ut.crops[language],
+        "Arbusto y matorral": ut.shrub_scrub[language],
+        "Urbanización": ut.urbanization[language],
+        "Descubierto": ut.bare[language],
+        "Nieve y hielo": ut.snow_ice[language],
+    }
+
+
 def plot_map_season(bbox_latlon, fua_latlon_centroid, season, year, language="es"):
     """Plots Dynamic World temporal composite on map for year and season.
 
     Season can one of the four seasons or 'all' for a yearly aggregate.
     """
 
-    category_translations = {
-        "es": {
-            "Agua": "Agua",
-            "Árboles": "Árboles",
-            "Césped/Pasto": "Césped/Pasto",
-            "Vegetación inundada": "Vegetación inundada",
-            "Cultivos": "Cultivos",
-            "Arbusto y matorral": "Arbusto y matorral",
-            "Urbanización": "Urbanización",
-            "Descubierto": "Descubierto",
-            "Nieve y hielo": "Nieve y hielo",
-        },
-        "en": {
-            "Agua": "Water",
-            "Árboles": "Trees",
-            "Césped/Pasto": "Grass/Lawn",
-            "Vegetación inundada": "Flooded Vegetation",
-            "Cultivos": "Crops",
-            "Arbusto y matorral": "Shrub and Scrub",
-            "Urbanización": "Urbanization",
-            "Descubierto": "Bare",
-            "Nieve y hielo": "Snow and Ice",
-        },
-        "pt": {
-            "Agua": "Água",
-            "Árboles": "Árvores",
-            "Césped/Pasto": "Grama/Relva",
-            "Vegetación inundada": "Vegetação Alagada",
-            "Cultivos": "Culturas",
-            "Arbusto y matorral": "Arbusto e Mato",
-            "Urbanización": "Urbanização",
-            "Descubierto": "Descoberto",
-            "Nieve y hielo": "Neve e Gelo",
-        },
-    }
+    category_translations = generate_category_translations(language)
 
     translated_colors = {
-        category_translations[language][key]: value for key, value in colors.items()
+        category_translations[key]: value for key, value in colors.items()
     }
 
     assert season in ["Q1", "Q2", "Q3", "Q4", "Qall"]
@@ -319,17 +299,7 @@ def load_or_get_lc_df(bbox_latlon, path_cache, force=False):
 
 
 def _get_lc_area_df(bbox_latlon, path_cache, year=2022, language="es"):
-    category_translations = {
-        "Agua": ut.water[language],
-        "Árboles": ut.trees[language],
-        "Césped/Pasto": ut.grass[language],
-        "Vegetación inundada": ut.flooded_vegetation[language],
-        "Cultivos": ut.crops[language],
-        "Arbusto y matorral": ut.shrub_scrub[language],
-        "Urbanización": ut.urbanization[language],
-        "Descubierto": ut.bare[language],
-        "Nieve y hielo": ut.snow_ice[language],
-    }
+    category_translations = generate_category_translations(language)
 
     x_col = ut.area_km[language]
     y_col = ut.coverage_type[language]
@@ -370,17 +340,7 @@ def plot_lc_year(bbox_latlon, path_cache, year=2022, language="es"):
 
 
 def plot_lc_time_series(bbox_latlon, path_cache, language="es"):
-    category_translations = {
-        "Agua": ut.water[language],
-        "Árboles": ut.trees[language],
-        "Césped/Pasto": ut.grass[language],
-        "Vegetación inundada": ut.flooded_vegetation[language],
-        "Cultivos": ut.crops[language],
-        "Arbusto y matorral": ut.shrub_scrub[language],
-        "Urbanización": ut.urbanization[language],
-        "Descubierto": ut.bare[language],
-        "Nieve y hielo": ut.snow_ice[language],
-    }
+    category_translations = generate_category_translations(language)
 
     lc_df = load_or_get_lc_df(bbox_latlon, path_cache)
 
